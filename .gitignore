@@ -1,0 +1,6 @@
+# /Torch/__pycache__/
+# /Torch/Nets/__pycache__/
+# /GA/__pycache__/
+# /Ortools/__pycache__/
+__pycache__
+.DS_Store
