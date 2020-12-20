@@ -130,32 +130,27 @@ if __name__ == '__main__':
 	print(f'model loading time:{time()-t1}s')
 	if args.txt is not None:
 		hoge = TorchJson(args.txt)
-		data = hoge.load_json()
-		# data = {}
-		# for k in ['depot_xy', 'customer_xy', 'demand', 'car_start_node', 'car_capacity']:
-		# 	v = load_json(args.txt)[k]
-		# 	if k == 'car_start_node':# long
-		# 		elem = [torch.from_numpy(np.array(v)).long().to(device) for j in range(args.batch)]
-		# 	else:# float
-		# 		elem = [torch.from_numpy(np.array(v)).float().to(device) for j in range(args.batch)]
-		# 	data[k] = torch.stack(elem, 0)
+		data = hoge.load_json(device)# return tensor on GPU
+		
 	else:
 		data = {}
 		for k in ['depot_xy', 'customer_xy', 'demand', 'car_start_node', 'car_capacity']:
 			elem = [generate_data(device, batch = 1, n_car = args.n_car, n_depot = args.n_depot, n_customer = args.n_customer, seed = args.seed)[k].squeeze(0) for j in range(args.batch)]
 			data[k] = torch.stack(elem, 0)
+	
 	# for k, v in data.items():
 	# 	print('k, v', k, v.size())
 	# 	print(v.type())# dtype of tensor
+	
 	print(f'data generate time:{time()-t1}s')
 	pretrained = pretrained.to(device)
 	# data = list(map(lambda x: x.to(device), data))
 	pretrained.eval()
 	with torch.no_grad():
 		costs, _, pi = pretrained(data, return_pi = True, decode_type = args.decode_type)
-	print('costs:', costs)
-	idx_in_batch = torch.argmin(costs, dim = 0)
-	print(f'decode type:{args.decode_type}\nminimum cost: {costs[idx_in_batch]:.3f} and idx: {idx_in_batch} out of {args.batch} solutions')
-	print(f'{pi[idx_in_batch]}\ninference time: {time()-t1}s')
-	plot_route(data, pi, costs, 'Pretrained', idx_in_batch)
-	
+		print('costs:', costs)
+		idx_in_batch = torch.argmin(costs, dim = 0)
+		print(f'decode type:{args.decode_type}\nminimum cost: {costs[idx_in_batch]:.3f} and idx: {idx_in_batch} out of {args.batch} solutions')
+		print(f'{pi[idx_in_batch]}\ninference time: {time()-t1}s')
+		plot_route(data, pi, costs, 'Pretrained', idx_in_batch)
+		

@@ -10,7 +10,7 @@ class TorchJson():
 		if not os.path.isfile(json_path):
 			raise FileNotFoundError
 		self.json_path = json_path
-
+		
 	def dump_json(self, src):
 		# https://note.nkmk.me/python-json-load-dump/
 		if isinstance(src['depot_xy'], torch.Tensor):
@@ -20,13 +20,13 @@ class TorchJson():
 		with open(self.json_path, 'w') as f:
 			json.dump(dst, f, indent = 4)
 
-	def load_json(self):
+	def load_json(self, device):
 		if not os.path.isfile(self.json_path):
 			raise FileNotFoundError
 		with open(self.json_path) as f:
 			dst = json.load(f)
 		for k, v in dst.items():
-			dst[k] = torch.tensor(v)
+			dst[k] = torch.tensor(v).to(device)
 		return dst
 
 
