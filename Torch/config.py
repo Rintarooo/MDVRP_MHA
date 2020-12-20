@@ -82,7 +82,7 @@ def test_parser():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-p', '--path', metavar = 'P', type = str, required = True,  
 						help = 'Weights/VRP***_epoch***.pt, pt file required')
-	parser.add_argument('-dt', '--decode_type', metavar = 'DT', type = str, required = True, choices = ['greedy', 'sampling'], help = 'greedy or sampling required')
+	parser.add_argument('-dt', '--decode_type', metavar = 'DT', type = str, default = 'sampling', choices = ['greedy', 'sampling'], help = 'greedy or sampling required')
 	parser.add_argument('-b', '--batch', metavar = 'B', type = int, default = 2, help = 'batch size')
 	parser.add_argument('-n', '--n_customer', metavar = 'N', type = int, default = 20, help = 'number of customer nodes, time sequence')
 	parser.add_argument('-c', '--n_car', metavar = 'C', type = int, default = 10, help = 'number of available vehicles')

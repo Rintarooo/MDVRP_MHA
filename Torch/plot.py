@@ -13,7 +13,7 @@ sys.path.append('../')
 from dataclass import TorchJson
 
 
-# python plot.py -b 128 -dt sampling -p Weights/VRP50_train_epoch75.pt -t data/
+# python plot.py -b 128 -p Weights/VRP50_train_epoch75.pt -t data/
 
 def get_clean_path(arr):
 	"""Returns extra zeros from path.
@@ -58,7 +58,7 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0):
 	pi_cars = pi[idx_in_batch].cpu().numpy()
 	for each_car_pi in pi_cars:
 		list_of_paths.append(clear_each_route(each_car_pi))
-	print(list_of_paths)
+	print('list_of_paths: ', list_of_paths)
 
 	# ['depot_xy', 'customer_xy', 'demand', 'car_start_node', 'car_capacity']
 	depot_xy = data['depot_xy'][idx_in_batch].cpu().numpy()
@@ -68,6 +68,8 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0):
 	customer_labels = ['(' + str(demand) + ')' for demand in demands.round(2)]
 	
 	xy = np.concatenate([depot_xy, customer_xy], axis = 0)
+
+
 
 	path_traces = []
 	for i, path in enumerate(list_of_paths, 1):
@@ -104,7 +106,9 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0):
 							marker_symbol = 'triangle-up'
 							)
 	
-	layout = go.Layout(title = dict(text = f'<b>VRP{customer_xy.shape[0]} depot{depot_xy.shape[0]} {title}, Total Length = {cost:.3f}</b>', x = 0.5, y = 1, yanchor = 'bottom', yref = 'paper', pad = dict(b = 10)),#https://community.plotly.com/t/specify-title-position/13439/3
+	layout = go.Layout(
+						# title = dict(text = f'<b>VRP{customer_xy.shape[0]} depot{depot_xy.shape[0]} {title}, Total Length = {cost:.3f}</b>', x = 0.5, y = 1, yanchor = 'bottom', yref = 'paper', pad = dict(b = 10)),#https://community.plotly.com/t/specify-title-position/13439/3
+					   title = dict(text = f'<b>VRP{customer_xy.shape[0]} depot{depot_xy.shape[0]} {title}, Total Length = {cost:.3f}</b>', x = 0.5, y = 1, yanchor = 'bottom', xref = 'paper', yref = 'paper', pad = dict(b = 10)),
 					   # xaxis = dict(title = 'X', range = [0, 1], ticks='outside'),
 					   # yaxis = dict(title = 'Y', range = [0, 1], ticks='outside'),#https://kamino.hatenablog.com/entry/plotly_for_report
 					   xaxis = dict(title = 'X', range = [0, 1], linecolor = 'black', showgrid=False, ticks='outside', linewidth=1, mirror=True),
@@ -114,7 +118,8 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0):
 					   height = 700,
 					   autosize = True,
 					   template = "plotly_white",
-					   legend = dict(x = 1, xanchor = 'right', y =0, yanchor = 'bottom', bordercolor = '#444', borderwidth = 0)
+					   legend = dict(x = 1.05, xanchor = 'left', y =0, yanchor = 'bottom', bordercolor = 'black', borderwidth = 1)
+					   # legend = dict(x = 1, xanchor = 'right', y =0, yanchor = 'bottom', bordercolor = '#444', borderwidth = 0)
 					   # legend = dict(x = 0, xanchor = 'left', y =0, yanchor = 'bottom', bordercolor = '#444', borderwidth = 0)
 					   )
 
@@ -153,9 +158,10 @@ if __name__ == '__main__':
 	pretrained.eval()
 	with torch.no_grad():
 		costs, _, pi = pretrained(data, return_pi = True, decode_type = args.decode_type)
-		print('costs:', costs)
+		# print('costs:', costs)
 		idx_in_batch = torch.argmin(costs, dim = 0)
 		print(f'decode type:{args.decode_type}\nminimum cost: {costs[idx_in_batch]:.3f} and idx: {idx_in_batch} out of {args.batch} solutions')
-		print(f'{pi[idx_in_batch]}\ninference time: {time()-t1}s')
+		# print(f'{pi[idx_in_batch]}\ninference time: {time()-t1}s')
+		print(f'\ninference time: {time()-t1}s')
 		plot_route(data, pi, costs, 'Pretrained', idx_in_batch)
 		
