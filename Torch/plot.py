@@ -131,6 +131,11 @@ if __name__ == '__main__':
 	if args.txt is not None:
 		hoge = TorchJson(args.txt)
 		data = hoge.load_json(device)# return tensor on GPU
+		for k, v in data.items():
+			shape = (args.batch, ) + v.size()[1:] 
+			data[k] = v.expand(*shape).clone()
+			# print('k, v', k, *v.size())
+			# print(*shape)
 		
 	else:
 		data = {}
