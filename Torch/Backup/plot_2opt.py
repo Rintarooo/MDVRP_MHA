@@ -116,7 +116,7 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0, is_tensor = True):
 	fig = go.Figure(data = data, layout = layout)
 	fig.show()
 
-def opt2(route, dist): 
+def opt2_swap(route, dist): 
 	size = len(route)
 	for i in range(size - 2):
 		i1 = i + 1
@@ -166,7 +166,7 @@ def improve_opt2(pi, data, idx_in_batch):
 	# print(routes)
 	new_route = []
 	for route in routes:# apply 2-opt to each route
-		tmp = opt2(route, dist)
+		tmp = opt2_swap(route, dist)
 		new_route.extend(tmp)
 	# print(new_route)
 	new_route = get_clean_path(new_route)

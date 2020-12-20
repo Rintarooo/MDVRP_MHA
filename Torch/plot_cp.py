@@ -1,7 +1,6 @@
 from time import time
 import torch
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
@@ -16,25 +15,25 @@ from dataclass import TorchJson
 
 # python plot.py -b 128 -p Weights/VRP50_train_epoch75.pt -t data/
 
-# def get_clean_path(arr):
-# 	"""Returns extra zeros from path.
-# 	   Dynamical model generates duplicated zeros for several graphs when obtaining partial solutions.
-# 	"""
-# 	p1, p2 = 0, 1
-# 	output = []
-# 	while p2 < len(arr):
-# 		if arr[p1] != arr[p2]:
-# 			output.append(arr[p1])
-# 			if p2 == len(arr) - 1:
-# 				output.append(arr[p2])
-# 		p1 += 1
-# 		p2 += 1
+def get_clean_path(arr):
+	"""Returns extra zeros from path.
+	   Dynamical model generates duplicated zeros for several graphs when obtaining partial solutions.
+	"""
+	p1, p2 = 0, 1
+	output = []
+	while p2 < len(arr):
+		if arr[p1] != arr[p2]:
+			output.append(arr[p1])
+			if p2 == len(arr) - 1:
+				output.append(arr[p2])
+		p1 += 1
+		p2 += 1
 
-# 	if output[0] != 0:
-# 		output.insert(0, 0)# insert 0 in 0th of the array
-# 	if output[-1] != 0:
-# 		output.append(0)# insert 0 at the end of the array
-# 	return output
+	if output[0] != 0:
+		output.insert(0, 0)# insert 0 in 0th of the array
+	if output[-1] != 0:
+		output.append(0)# insert 0 at the end of the array
+	return output
 
 def clear_each_route(arr):
 	dst = []
@@ -45,73 +44,7 @@ def clear_each_route(arr):
 		dst.append(dst[0])
 	return dst
 
-def get_dist(n1, n2):
-	x1,y1,x2,y2 = n1[0],n1[1],n2[0],n2[1]
-	if isinstance(n1, torch.Tensor):
-		return torch.sqrt((x2-x1).pow(2)+(y2-y1).pow(2))
-	elif isinstance(n1, (list, np.ndarray)):
-		return math.sqrt(pow(x2-x1,2)+pow(y2-y1,2))
-	else:
-		raise TypeError
-	
-def get_dist_mat(xy): 
-	n = len(xy)
-	dist_mat = [[0. for i in range(n)] for i in range(n)]
-	for i in range(n):
-		for j in range(i, n):
-			dist = get_dist(xy[i], xy[j])
-			dist_mat[i][j] = dist_mat[j][i] = dist#round(float(two), digit)
-	return dist_mat
-
-def opt2_swap(route, dist_mat): 
-	size = len(route)
-	improved = True
-	while improved:
-		improved = False
-		for i in range(size - 2):
-			i1 = i + 1
-			a = route[i]
-			b = route[i1]
-			for j in range(i + 2, size):
-				j1 = j + 1
-				if j == size - 1:
-					j1 = 0
-
-				c = route[j]
-				d = route[j1]
-				if i == 0 and j1 == 0: continue# if i == j1
-				if(dist_mat[a][c] + dist_mat[b][d] < dist_mat[a][b] + dist_mat[c][d]):
-					""" i i+1 j j+1
-						swap(i+1, j)
-					"""
-					tmp = route[i1:j1]
-					route[i1:j1] = tmp[::-1]# tmp in inverse order
-					improved = True 
-	return route
-
-# def opt2_swap(route, dist_mat): 
-# 	size = len(route)
-# 	for i in range(size - 2):
-# 		i1 = i + 1
-# 		a = route[i]
-# 		b = route[i1]
-# 		for j in range(i + 2, size):
-# 			j1 = j + 1
-# 			if j == size - 1:
-# 				j1 = 0
-
-# 			c = route[j]
-# 			d = route[j1]
-# 			if i == 0 and j1 == 0: continue# if i == j1
-# 			if(dist_mat[a][c] + dist_mat[b][d] < dist_mat[a][b] + dist_mat[c][d]):
-# 				""" i i+1 j j+1
-# 					swap(i+1, j)
-# 				"""
-# 				tmp = route[i1:j1]
-# 				route[i1:j1] = tmp[::-1]# tmp in inverse order 
-# 	return route
-
-def plot_route(data, pi, costs, title, idx_in_batch = 0, opt = False):
+def plot_route(data, pi, costs, title, idx_in_batch = 0):
 	"""Plots journey of agent
 	Args:
 		data: dataset of graphs
@@ -121,33 +54,26 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0, opt = False):
 	cost = costs[idx_in_batch].cpu().numpy()
 	
 	# Remove extra zeros
-	routes = []
+	list_of_paths = []
 	pi_cars = pi[idx_in_batch].cpu().numpy()
 	for each_car_pi in pi_cars:
-		routes.append(clear_each_route(each_car_pi))
-	print('routes: ', routes)
+		list_of_paths.append(clear_each_route(each_car_pi))
+	print('list_of_paths: ', list_of_paths)
 
 	# ['depot_xy', 'customer_xy', 'demand', 'car_start_node', 'car_capacity']
 	depot_xy = data['depot_xy'][idx_in_batch].cpu().numpy()
 	customer_xy = data['customer_xy'][idx_in_batch].cpu().numpy()
 	demands = data['demand'][idx_in_batch].cpu().numpy()
+	# customer_labels = ['(' + str(i) + ', ' + str(demand) + ')' for i, demand in enumerate(demands.round(2), 1)]
 	customer_labels = ['(' + str(demand) + ')' for demand in demands.round(2)]
 	
 	xy = np.concatenate([depot_xy, customer_xy], axis = 0)
 
 
-	if opt:# 2-opt
-		dist_mat = get_dist_mat(xy)
-
-		new_routes = []
-		for route in routes:# apply 2-opt to each route
-			if len(route) > 0: new_routes.append(opt2_swap(route, dist_mat))
-		routes = new_routes
-	print('routes: ', routes)
 
 	path_traces = []
-	for i, route in enumerate(routes, 1):
-		coords = xy[[int(x) for x in route]]
+	for i, path in enumerate(list_of_paths, 1):
+		coords = xy[[int(x) for x in path]]
 
 		# Calculate length of each agent loop
 		lengths = np.sqrt(np.sum(np.diff(coords, axis = 0) ** 2, axis = 1))
@@ -234,8 +160,8 @@ if __name__ == '__main__':
 		costs, _, pi = pretrained(data, return_pi = True, decode_type = args.decode_type)
 		# print('costs:', costs)
 		idx_in_batch = torch.argmin(costs, dim = 0)
-		print(f'decode type: {args.decode_type}\nminimum cost: {costs[idx_in_batch]:.3f} and idx: {idx_in_batch} out of {args.batch} solutions')
+		print(f'decode type:{args.decode_type}\nminimum cost: {costs[idx_in_batch]:.3f} and idx: {idx_in_batch} out of {args.batch} solutions')
 		# print(f'{pi[idx_in_batch]}\ninference time: {time()-t1}s')
 		print(f'\ninference time: {time()-t1}s')
-		plot_route(data, pi, costs, 'Pretrained', idx_in_batch, True)
+		plot_route(data, pi, costs, 'Pretrained', idx_in_batch)
 		
