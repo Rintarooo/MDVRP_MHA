@@ -47,6 +47,16 @@ python plot.py -p Weights/***.pt -t data/.json -b 128
 ```
 
 ## Reference
+DRL_MHA
 * https://github.com/wouterkool/attention-learn-to-route
 * https://github.com/d-eremeev/ADM-VRP
 * https://qiita.com/ohtaman/items/0c383da89516d03c3ac0
+
+Google Ortools
+* https://github.com/skatsuta/vrp-solver
+
+GA(Python)
+* https://github.com/Lagostra/MDVRP
+
+GA(C++)
+* https://github.com/mathiasaap/Multi-Depot-Routing---Genetic-algorithm
