@@ -7,8 +7,6 @@ import json
 
 class TorchJson():
 	def __init__(self, json_path):
-		if not os.path.isfile(json_path):
-			raise FileNotFoundError
 		self.json_path = json_path
 		
 	def dump_json(self, src):
@@ -140,14 +138,15 @@ def get_dist_mat(data, scale_up = 1e4):# digit = 2
 
 if __name__ == '__main__':
 	device = torch.device('cpu')# torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')	
-	n_depot = 3
-	n_car = 13
+	n_depot = 2
+	n_car = 12
 	n_customer = 50
-	seed = 3
-	from Torch import generate_data
+	seed = 123
+
+	from Torch.dataset import generate_data
 	data = generate_data(device, batch = 1, n_car = n_car, n_depot = n_depot, n_customer = n_customer, seed = seed)
 	
-	basename = f'd{n_depot}c{n_customer}.json'
+	basename = f'd{n_depot}n{n_customer}.json'
 	dirname1 = 'Torch/data/'
 	dirname2 = 'Ortools/data/'
 	dirname3 = 'GA/data/'
@@ -162,7 +161,7 @@ if __name__ == '__main__':
 	
 	hoge1 = TorchJson(json_path_torch)
 	hoge1.dump_json(data)
-	data = hoge1.load_json()
+	data = hoge1.load_json(device)
 	
 	hoge2 = GAtxt(txt_path)
 	hoge2.write_txt(data)

@@ -10,11 +10,10 @@ from ortools.constraint_solver.routing_enums_pb2 \
 
 import sys
 sys.path.append('../')
-from dataclass import OrtoolsJson
+from dataclass import OrtoolsJson# from data import load_json
 
-# from data import load_json
 from print import print_solution
-from visualize import draw_network_graph, draw_route_graph
+# from visualize import draw_network_graph, draw_route_graph
 
 TransitCallback = Callable[[int, int], int]
 UnaryTransitCallback = Callable[[int], int]
@@ -184,6 +183,7 @@ if __name__ == '__main__':
 
 		# Draw network and route graphs
 		if args.graph:
+			from visualize import draw_network_graph, draw_route_graph
 			# draw_network_graph(data)
 			draw_route_graph(data, routing, manager, assignment)
 	else:

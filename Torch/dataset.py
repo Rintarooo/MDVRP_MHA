@@ -19,6 +19,7 @@ def generate_data(device, batch = 10, n_car = 15, n_depot = 1, n_customer = 20, 
 			,'demand': torch.randint(low = 1, high = 10, size = (batch, n_customer), device = device) / CAPACITIES[n_customer]
 			,'car_start_node': torch.randint(low = 0, high = n_depot, size = (batch, n_car), device = device)
 			,'car_capacity': torch.ones((batch, n_car), device = device)
+			# ,'car_capacity': 2. * torch.ones((batch, n_car), device = device)
 			}
 
 class Generator(Dataset):
