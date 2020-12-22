@@ -142,11 +142,12 @@ if __name__ == '__main__':
 	n_car = 12
 	n_customer = 50
 	seed = 123
+	capa = 2.
 
 	from Torch.dataset import generate_data
-	data = generate_data(device, batch = 1, n_car = n_car, n_depot = n_depot, n_customer = n_customer, seed = seed)
+	data = generate_data(device, batch = 1, n_car = n_car, n_depot = n_depot, n_customer = n_customer, capa = capa, seed = seed)
 	
-	basename = f'd{n_depot}n{n_customer}.json'
+	basename = f'd{n_depot}n{n_customer}D{int(capa)}.json'
 	dirname1 = 'Torch/data/'
 	dirname2 = 'Ortools/data/'
 	dirname3 = 'GA/data/'
@@ -155,15 +156,16 @@ if __name__ == '__main__':
 
 	json_path_torch = dirname1 + basename
 	json_path_ortools = dirname2 + basename
-	txt_path = dirname3 + basename.split('.')[0] + '.txt'
-	
+	txt_path_ga = dirname3 + basename.split('.')[0] + '.txt'
+	for x in [json_path_torch, json_path_ortools, txt_path_ga]:
+		print(f'generate {x} ...')
 
 	
 	hoge1 = TorchJson(json_path_torch)
 	hoge1.dump_json(data)
 	data = hoge1.load_json(device)
 	
-	hoge2 = GAtxt(txt_path)
+	hoge2 = GAtxt(txt_path_ga)
 	hoge2.write_txt(data)
 
 	hoge3 = OrtoolsJson(json_path_ortools)

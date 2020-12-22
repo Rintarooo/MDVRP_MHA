@@ -111,7 +111,7 @@ def opt2_swap(route, dist_mat):
 # 				route[i1:j1] = tmp[::-1]# tmp in inverse order 
 # 	return route
 
-def plot_route(data, pi, costs, title, idx_in_batch = 0, opt = False):
+def plot_route(data, pi, costs, title, t1, t2, idx_in_batch = 0, opt = False):
 	"""Plots journey of agent
 	Args:
 		data: dataset of graphs
@@ -134,7 +134,8 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0, opt = False):
 	customer_labels = ['(' + str(demand) + ')' for demand in demands.round(2)]
 	
 	xy = np.concatenate([depot_xy, customer_xy], axis = 0)
-
+	
+	print('cost(without 2opt): ', cost)
 
 	if opt:# 2-opt
 		dist_mat = get_dist_mat(xy)
@@ -144,20 +145,25 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0, opt = False):
 			if len(route) > 0: new_routes.append(opt2_swap(route, dist_mat))
 		routes = new_routes
 	print('routes: ', routes)
+	print('inference time: ', time()-t1)
+	print(f'\ninference time(without loading model): {time()-t2}s')
 
 	path_traces = []
+	cost = 0.
 	for i, route in enumerate(routes, 1):
 		coords = xy[[int(x) for x in route]]
 
 		# Calculate length of each agent loop
 		lengths = np.sqrt(np.sum(np.diff(coords, axis = 0) ** 2, axis = 1))
 		total_length = np.sum(lengths)
+		cost += total_length
 
 		path_traces.append(go.Scatter(x = coords[:, 0],
 									y = coords[:, 1],
 									mode = 'markers+lines',
 									name = f'Vehicle{i}: Length = {total_length:.3f}',
 									opacity = 1.0))
+	print('cost: ', cost)
 
 	trace_points = go.Scatter(x = customer_xy[:, 0],
 							  y = customer_xy[:, 1],
@@ -173,7 +179,8 @@ def plot_route(data, pi, costs, title, idx_in_batch = 0, opt = False):
 							y = depot_xy[:,1],
 							# mode = 'markers+text',
 							mode = 'markers',
-							name = 'Depot (Capacity = 1.0)',
+							# name = 'Depot (Capacity = 1.0)',
+							name = 'Depot',
 							# text = ['1.0'],
 							# textposition = 'bottom center',
 							marker = dict(size = 23),
@@ -207,6 +214,7 @@ if __name__ == '__main__':
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 	pretrained = load_model(device, args.path, embed_dim = 128, n_encode_layers = 3)
 	print(f'model loading time:{time()-t1}s')
+	t2 = time()
 	if args.txt is not None:
 		hoge = TorchJson(args.txt)
 		data = hoge.load_json(device)# return tensor on GPU
@@ -237,5 +245,6 @@ if __name__ == '__main__':
 		print(f'decode type: {args.decode_type}\nminimum cost: {costs[idx_in_batch]:.3f} and idx: {idx_in_batch} out of {args.batch} solutions')
 		# print(f'{pi[idx_in_batch]}\ninference time: {time()-t1}s')
 		print(f'\ninference time: {time()-t1}s')
-		plot_route(data, pi, costs, 'Pretrained', idx_in_batch, True)
+		print(f'\ninference time(without loading model): {time()-t2}s')
+		plot_route(data, pi, costs, 'Pretrained', t1, t2, idx_in_batch, True)
 		
