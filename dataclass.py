@@ -138,16 +138,16 @@ def get_dist_mat(data, scale_up = 1e4):# digit = 2
 
 if __name__ == '__main__':
 	device = torch.device('cpu')# torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')	
-	n_depot = 3
-	n_car_each_depot = 4#12
+	n_depot = 2
+	n_car_each_depot = 6#12
 	n_customer = 50
 	seed = 123
-	capa = 2.
+	capa = 1.
 
 	from Torch.dataset import generate_data
 	data = generate_data(device, batch = 1, n_car_each_depot = n_car_each_depot, n_depot = n_depot, n_customer = n_customer, capa = capa, seed = seed)
 	
-	basename = f'd{n_depot}n{n_customer}D{int(capa)}.json'
+	basename = f'n{n_customer}d{n_depot}c{n_car_each_depot}D{int(capa)}.json'
 	dirname1 = 'Torch/data/'
 	dirname2 = 'Ortools/data/'
 	dirname3 = 'GA/data/'
