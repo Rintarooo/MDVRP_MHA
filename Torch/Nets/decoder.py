@@ -1,14 +1,14 @@
 import torch
 import torch.nn as nn
 
-# from decoder_layers import MultiHeadAttention, DotProductAttention
-# from decoder_utils import TopKSampler, CategoricalSampler, Env
-# import sys
-# sys.path.append('../')
-# from dataset import generate_data
+from decoder_layers import MultiHeadAttention, DotProductAttention
+from decoder_utils import TopKSampler, CategoricalSampler, Env
+import sys
+sys.path.append('../')
+from dataset import generate_data
 
-from .decoder_layers import MultiHeadAttention, DotProductAttention
-from .decoder_utils import TopKSampler, CategoricalSampler, Env
+# from .decoder_layers import MultiHeadAttention, DotProductAttention
+# from .decoder_utils import TopKSampler, CategoricalSampler, Env
 
 
 class DecoderCell(nn.Module):
@@ -62,6 +62,7 @@ class DecoderCell(nn.Module):
 		log_ps, tours, cars, idxs = [[] for _ in range(4)]
 		for i in range(self.env.n_node * 4):
 			logits = self.compute_dynamic(mask, step_context)
+			print('logits:', logits)
 			log_p = torch.log_softmax(logits, dim = -1)	
 			idx = selecter(log_p)
 			next_car = idx // self.env.n_node
@@ -76,7 +77,7 @@ class DecoderCell(nn.Module):
 			if self.env.traversed_customer.all():
 				break
 
-		assert self.env.traversed_customer.all(), "not traversed all customer"
+		assert self.env.traversed_customer.all(), f"not traversed all customer {self.env.traversed_customer}"
 		# print('self.env.car_start_node:', self.env.car_start_node)
 		self.env.return_depot_all_car()
 		# print(self.env.car_run[0])
@@ -101,17 +102,20 @@ class DecoderCell(nn.Module):
 		return cost, ll
 
 if __name__ == '__main__':
-	batch, n_car, n_depot, n_customer, n_node = 5, 15, 2, 20, 22
+	# batch, n_car, n_depot, n_customer, n_node = 5, 15, 2, 20, 22
 	# batch, n_car, n_depot, n_customer, n_node = 2, 5, 4, 5, 9
 	# batch, n_car, n_depot, n_customer, n_node = 2, 5, 3, 5, 8
 	# batch, n_car, n_depot, n_customer, n_node = 2, 10, 1, 20, 21
 	# batch, n_car, n_depot, n_customer, n_node = 1, 5, 1, 10, 11
 	# batch, n_car, n_depot, n_customer, n_node = 2, 5, 3, 10, 13
+	batch, n_car_each_depot, n_depot, n_customer, n_node, capa = 2, 3, 2, 20, 22, 1.
 	assert n_node == n_depot + n_customer
 	embed_dim = 128
 
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-	data = generate_data(device, batch = batch, n_car = n_car, n_depot = n_depot, n_customer = n_customer)
+	# device = torch.device('cpu')
+	data = generate_data(device, batch = batch, n_car_each_depot = n_car_each_depot, n_depot = n_depot, n_customer = n_customer, capa = capa)
+
 	
 	decoder = DecoderCell(embed_dim, n_heads = 8, clip = 10.)
 	node_embeddings = torch.rand((batch, n_node, embed_dim), dtype = torch.float, device = device)
@@ -122,7 +126,7 @@ if __name__ == '__main__':
 	
 	# decoder.train()
 	return_pi = True
-	output = decoder(data, encoder_output, return_pi = return_pi, decode_type = 'sampling')
+	output = decoder(data, encoder_output, return_pi = return_pi, decode_type = 'greedy')
 	if return_pi:
 		"""cost: (batch)
 			ll: (batch)

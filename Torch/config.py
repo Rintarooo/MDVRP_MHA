@@ -8,7 +8,8 @@ def arg_parser():
 	parser.add_argument('--seed', metavar = 'SE', type = int, default = 123, help = 'random seed number for inference(or validation during training), reproducibility')
 	# main config
 	parser.add_argument('-n', '--n_customer', metavar = 'N', type = int, default = 20, help = 'number of customer nodes, time sequence')
-	parser.add_argument('-c', '--n_car', metavar = 'C', type = int, default = 10, help = 'number of available vehicles')
+	parser.add_argument('-c', '--n_car_each_depot', metavar = 'C', type = int, default = 3, help = 'number of available vehicles per depot')
+	parser.add_argument('-D', '--capa', metavar = 'CA', type = float, default = 1., help = 'initial capacity of vehicles')
 	parser.add_argument('-d', '--n_depot', metavar = 'D', type = int, default = 2, help = 'number of depot nodes')
 
 	# batch config
@@ -17,8 +18,8 @@ def arg_parser():
 	parser.add_argument('-v', '--batch_verbose', metavar = 'V', type = int, default = 10, help = 'print and logging during training process')
 	parser.add_argument('-e', '--epochs', metavar = 'E', type = int, default = 20, help = 'total number of samples = epochs * number of samples')
 
-	parser.add_argument('-nr', '--n_rollout_samples', metavar = 'NR', type = int, default = 5000, help = 'baseline rollout number of samples')
-	parser.add_argument('-nv', '--n_val_samples', metavar = 'NV', type = int, default = 5000, help = 'validation number of samples during training')
+	parser.add_argument('-nr', '--n_rollout_samples', metavar = 'NR', type = int, default = 10000, help = 'baseline rollout number of samples')
+	parser.add_argument('-nv', '--n_val_samples', metavar = 'NV', type = int, default = 10000, help = 'validation number of samples during training')
 	parser.add_argument('-em', '--embed_dim', metavar = 'EM', type = int, default = 128, help = 'embedding size')
 	parser.add_argument('-nh', '--n_heads', metavar = 'NH', type = int, default = 8, help = 'number of heads in MHA')
 	parser.add_argument('-th', '--tanh_clipping', metavar = 'TH', type = float, default = 10., help = 'improve exploration; clipping logits')

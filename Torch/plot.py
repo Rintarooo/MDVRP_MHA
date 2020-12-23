@@ -213,6 +213,7 @@ if __name__ == '__main__':
 	t1 = time()
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 	pretrained = load_model(device, args.path, embed_dim = 128, n_encode_layers = 3)
+	
 	print(f'model loading time:{time()-t1}s')
 	t2 = time()
 	if args.txt is not None:
