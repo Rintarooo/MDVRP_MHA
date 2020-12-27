@@ -1,14 +1,14 @@
 import torch
 import torch.nn as nn
 
-from decoder_layers import MultiHeadAttention, DotProductAttention
-from decoder_utils import TopKSampler, CategoricalSampler, Env
-import sys
-sys.path.append('../')
-from dataset import generate_data
+# from decoder_layers import MultiHeadAttention, DotProductAttention
+# from decoder_utils import TopKSampler, CategoricalSampler, Env
+# import sys
+# sys.path.append('../')
+# from dataset import generate_data
 
-# from .decoder_layers import MultiHeadAttention, DotProductAttention
-# from .decoder_utils import TopKSampler, CategoricalSampler, Env
+from .decoder_layers import MultiHeadAttention, DotProductAttention
+from .decoder_utils import TopKSampler, CategoricalSampler, Env
 
 
 class DecoderCell(nn.Module):
@@ -60,9 +60,8 @@ class DecoderCell(nn.Module):
 		
 		selecter = {'greedy': TopKSampler(), 'sampling': CategoricalSampler()}.get(decode_type, None)
 		log_ps, tours, cars, idxs = [[] for _ in range(4)]
-		for i in range(self.env.n_node * 4):
+		for i in range(self.env.n_node * 10):
 			logits = self.compute_dynamic(mask, step_context)
-			print('logits:', logits)
 			log_p = torch.log_softmax(logits, dim = -1)	
 			idx = selecter(log_p)
 			next_car = idx // self.env.n_node
@@ -77,7 +76,7 @@ class DecoderCell(nn.Module):
 			if self.env.traversed_customer.all():
 				break
 
-		assert self.env.traversed_customer.all(), f"not traversed all customer {self.env.traversed_customer}"
+		assert self.env.traversed_customer.all(), f"not traversed all customer {self.env.traversed_customer} {self.env.D}"
 		# print('self.env.car_start_node:', self.env.car_start_node)
 		self.env.return_depot_all_car()
 		# print(self.env.car_run[0])

@@ -139,9 +139,9 @@ def get_dist_mat(data, scale_up = 1e4):# digit = 2
 if __name__ == '__main__':
 	device = torch.device('cpu')# torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')	
 	n_depot = 3
-	n_car_each_depot = 3#12
+	n_car_each_depot = 5#12
 	n_customer = 100
-	seed = 123
+	seed = 0
 	capa = 2.
 
 	from Torch.dataset import generate_data

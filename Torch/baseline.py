@@ -58,6 +58,7 @@ class RolloutBaseline:
 		self.n_car_each_depot = n_car_each_depot
 		self.n_depot = n_depot
 		self.n_customer = n_customer
+		assert capa in [1., 2.], 'capa should be 1. or 2.'
 		self.capa = capa
 		self.weight_dir = weight_dir
 
@@ -150,8 +151,11 @@ class RolloutBaseline:
 
 		# alpha controls the amount of warmup
 		if self.alpha < 1.0:
-			self.alpha = (self.cur_epoch + 1) / float(self.wp_epochs)
-			print(f'alpha was updated to {self.alpha}')
+			if self.n_customer == 100:
+				print(f'n_customer == 100, alpha remained {self.alpha}')
+			else:
+				self.alpha = (self.cur_epoch + 1) / float(self.wp_epochs)
+				print(f'alpha was updated to {self.alpha}')
 
 	def copy_model(self, model):
 		new_model = copy.deepcopy(model)
