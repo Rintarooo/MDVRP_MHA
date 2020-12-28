@@ -65,11 +65,11 @@ def train(cfg):
 							(t2-t1)//60, (t2-t1)%60, epoch, t, avg_loss/(t+1), avg_L/(t+1)))
 				t1 = time()
 
-		baseline.epoch_callback(model, epoch, 2*cfg.batch)
+		baseline.epoch_callback(model, epoch, 3*cfg.batch)
 		# weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
 		# torch.save(model.state_dict(), weight_path)
 		# print(f'generate {weight_path}')
-		val_L = baseline.validate(model, validation_dataset, 2*cfg.batch)
+		val_L = baseline.validate(model, validation_dataset, 3*cfg.batch)
 		if cfg.islogger:
 			if epoch == 0:
 				val_path = '%s%s_%s_val.csv'%(cfg.log_dir, cfg.task, cfg.dump_date)#cfg.log_dir = ./Csv/

@@ -1,0 +1,289 @@
+dataclass.py
+n_depot = 3
+n_car_each_depot = 5
+n_customer = 100
+seed = 0
+capa = 2.
+
+(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA$ python dataclass.py 
+generate Torch/data/n100d3c5D2.json ...
+generate Ortools/data/n100d3c5D2.json ...
+generate GA/data/n100d3c5D2.txt ...
+(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA$ cd Torch/
+(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/Torch$ python plot.py -p Weights/VRP100_epoch17.pt -t data/n100d3c5D2.json -b 512
+model loading time:3.378108501434326s
+data generate time:3.3792295455932617s
+decode type: sampling
+minimum cost: 12.673 and idx: 95 out of 512 solutions
+
+inference time: 4.668868064880371s
+
+inference time(without loading model): 1.2907288074493408s
+routes:  [[], [], [2, 61, 83, 31, 99, 96, 52, 84, 66, 7, 24, 80, 82, 58, 5, 93, 68, 90, 42, 2], [0, 100, 3, 69, 10, 25, 36, 34, 37, 8, 45, 19, 30, 23, 95, 50, 70, 86, 46, 0], [], [], [0, 4, 33, 59, 92, 26, 48, 60, 91, 73, 71, 67, 85, 32, 0], [1, 14, 51, 79, 63, 43, 88, 20, 39, 28, 21, 38, 77, 41, 13, 57, 89, 78, 27, 44, 1], [], [0, 76, 11, 15, 0], [], [2, 55, 56, 40, 18, 102, 87, 94, 98, 65, 12, 54, 2], [], [1, 35, 9, 22, 16, 29, 72, 6, 47, 62, 49, 97, 101, 75, 81, 53, 17, 74, 64, 1], []]
+cost(without 2opt):  12.673079
+routes:  [[2, 83, 61, 31, 96, 52, 84, 66, 99, 24, 5, 93, 80, 90, 42, 68, 82, 58, 7, 2], [0, 100, 3, 69, 10, 36, 34, 25, 37, 50, 70, 95, 23, 86, 46, 30, 19, 45, 8, 0], [0, 4, 33, 59, 26, 60, 32, 67, 85, 71, 73, 91, 48, 92, 0], [1, 14, 51, 79, 43, 88, 20, 44, 27, 78, 57, 89, 13, 41, 77, 21, 38, 28, 39, 63, 1], [0, 76, 15, 11, 0], [2, 98, 94, 87, 40, 56, 18, 102, 55, 54, 12, 65, 2], [1, 101, 49, 97, 22, 29, 16, 9, 35, 72, 62, 47, 6, 75, 81, 17, 64, 74, 53, 1]]
+inference time:  4.766218662261963
+
+inference time(without loading model): 1.3880784511566162s
+cost:  10.27188754081726
+Opening in existing browser session.
+(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/Torch$ cd ../GA/
+(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/GA$ python main.py data/n100d3c5D2.txt
+[Generation 0] Best score: 0.0007925945219342319 Consistent: True
+[Generation 10] Best score: 0.0008065272541342722 Consistent: True
+[Generation 20] Best score: 0.0008201920934108736 Consistent: True
+[Generation 30] Best score: 0.0008257839810709913 Consistent: True
+[Generation 40] Best score: 0.0008284193797264931 Consistent: True
+[Generation 50] Best score: 0.0008338756966036817 Consistent: True
+[Generation 60] Best score: 0.0008416482593722455 Consistent: True
+[Generation 70] Best score: 0.0008416482593722455 Consistent: True
+[Generation 80] Best score: 0.00084535766652832 Consistent: True
+[Generation 90] Best score: 0.00084535766652832 Consistent: True
+[Generation 100] Best score: 0.0008478586241454618 Consistent: True
+[Generation 110] Best score: 0.0008478586241454618 Consistent: True
+[Generation 120] Best score: 0.0008506370406362719 Consistent: True
+[Generation 130] Best score: 0.000853201928452953 Consistent: True
+[Generation 140] Best score: 0.0008556843231080797 Consistent: True
+[Generation 150] Best score: 0.0008577241511254777 Consistent: True
+[Generation 160] Best score: 0.0008581631069578385 Consistent: True
+[Generation 170] Best score: 0.0008583780522212343 Consistent: True
+[Generation 180] Best score: 0.0008583780522212343 Consistent: True
+[Generation 190] Best score: 0.0008603929175864237 Consistent: True
+[Generation 200] Best score: 0.0008629750978327654 Consistent: True
+[Generation 210] Best score: 0.000868623377943141 Consistent: True
+[Generation 220] Best score: 0.000868623377943141 Consistent: True
+[Generation 230] Best score: 0.000868623377943141 Consistent: True
+[Generation 240] Best score: 0.000868623377943141 Consistent: True
+[Generation 250] Best score: 0.000868623377943141 Consistent: True
+[Generation 260] Best score: 0.000868623377943141 Consistent: True
+[Generation 270] Best score: 0.0008733311171083495 Consistent: True
+[Generation 280] Best score: 0.0008770779605190307 Consistent: True
+[Generation 290] Best score: 0.0008770779605190307 Consistent: True
+[Generation 300] Best score: 0.0008773784274244436 Consistent: True
+[Generation 310] Best score: 0.0008773784274244436 Consistent: True
+[Generation 320] Best score: 0.0008787544443771755 Consistent: True
+[Generation 330] Best score: 0.0008806001595699955 Consistent: True
+[Generation 340] Best score: 0.0008806001595699955 Consistent: True
+[Generation 350] Best score: 0.0009032387272755702 Consistent: True
+[Generation 360] Best score: 0.000912370471589751 Consistent: True
+[Generation 370] Best score: 0.0009134542606220443 Consistent: True
+[Generation 380] Best score: 0.0009165274038242868 Consistent: True
+[Generation 390] Best score: 0.0009193373300292705 Consistent: True
+[Generation 400] Best score: 0.0009217073051365112 Consistent: True
+[Generation 410] Best score: 0.0009287594604118987 Consistent: True
+[Generation 420] Best score: 0.0009327035446770451 Consistent: True
+[Generation 430] Best score: 0.0009327035446770451 Consistent: True
+[Generation 440] Best score: 0.0009550023233909733 Consistent: True
+[Generation 450] Best score: 0.0009550023233909733 Consistent: True
+[Generation 460] Best score: 0.0009568541078407634 Consistent: True
+[Generation 470] Best score: 0.0009673045953624902 Consistent: True
+[Generation 480] Best score: 0.0009673045953624902 Consistent: True
+[Generation 490] Best score: 0.0009700391064423339 Consistent: True
+
+
+Finished training
+Best score: 0.0009737162031234835, best distance: 1026.9932828397057
+inference time: 35.18702745437622s
+depot No., visit route
+1 [40, 30, 71, 65, 42, 25, 87, 39, 11, 83, 69, 89, 44, 84, 68, 48, 93, 35, 23, 32, 21]
+1 [67, 98, 1, 9, 74, 31, 57, 24, 58, 46, 90, 28, 17, 43, 6, 34, 8]
+2 [4, 45, 60, 70, 47, 95, 27, 20, 33, 7, 14, 72, 61, 77, 41, 86, 18, 37, 26, 36, 75, 55, 76, 19, 62, 15]
+2 [99, 51, 79, 73]
+3 [10, 80, 56, 5, 22, 97, 64, 94, 50, 82, 12, 49, 3, 91, 78, 88, 66, 52, 2, 63]
+3 [81, 59, 53, 100, 13, 16, 54, 38, 85, 92, 96, 29]
+(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/GA$ cd ../Ortools/
+(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/Ortools$ python solver.py -p data/n100d3c5D2.json
+Route for vehicle 0:
+     [Node  0(0): Vehicle Load( 0)]
+  -> [Node 100(1000): Vehicle Load( 0)]
+  -> [Node 10(799): Vehicle Load(1000)]
+  -> [Node 36(1000): Vehicle Load(1799)]
+  -> [Node 34(399): Vehicle Load(2799)]
+  -> [Node 25(1599): Vehicle Load(3198)]
+  -> [Node 37(1000): Vehicle Load(4797)]
+  -> [Node 95(1599): Vehicle Load(5797)]
+  -> [Node 50(799): Vehicle Load(7396)]
+  -> [Node 70(1599): Vehicle Load(8195)]
+  -> [Node 86(1400): Vehicle Load(9794)]
+  -> [Node 46(199): Vehicle Load(11194)]
+  -> [Node 92(799): Vehicle Load(11393)]
+  -> [Node 30(1599): Vehicle Load(12192)]
+  -> [Node 19(1800): Vehicle Load(13791)]
+  -> [Node 45(1599): Vehicle Load(15591)]
+  -> [Node  8(599): Vehicle Load(17190)]
+  -> [Node 69(1800): Vehicle Load(17789)]
+  -> [Node  0(0): Vehicle Load(19589)]
+Cost: 14618
+Load: 19589
+
+Route for vehicle 1:
+     [Node  1(0): Vehicle Load( 0)]
+  -> [Node  1(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 2:
+     [Node  2(0): Vehicle Load( 0)]
+  -> [Node  2(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 3:
+     [Node  0(0): Vehicle Load( 0)]
+  -> [Node 12(199): Vehicle Load( 0)]
+  -> [Node 82(1199): Vehicle Load(199)]
+  -> [Node 58(1400): Vehicle Load(1398)]
+  -> [Node  7(1199): Vehicle Load(2798)]
+  -> [Node 24(1400): Vehicle Load(3997)]
+  -> [Node 99(599): Vehicle Load(5397)]
+  -> [Node 96(1000): Vehicle Load(5996)]
+  -> [Node 66(1000): Vehicle Load(6996)]
+  -> [Node 51(399): Vehicle Load(7996)]
+  -> [Node  5(599): Vehicle Load(8395)]
+  -> [Node 93(599): Vehicle Load(8994)]
+  -> [Node 80(1800): Vehicle Load(9593)]
+  -> [Node 79(1199): Vehicle Load(11393)]
+  -> [Node 88(799): Vehicle Load(12592)]
+  -> [Node 42(1800): Vehicle Load(13391)]
+  -> [Node 26(1599): Vehicle Load(15191)]
+  -> [Node 48(799): Vehicle Load(16790)]
+  -> [Node 91(1400): Vehicle Load(17589)]
+  -> [Node 23(599): Vehicle Load(18989)]
+  -> [Node  0(0): Vehicle Load(19588)]
+Cost: 21189
+Load: 19588
+
+Route for vehicle 4:
+     [Node  1(0): Vehicle Load( 0)]
+  -> [Node  1(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 5:
+     [Node  2(0): Vehicle Load( 0)]
+  -> [Node  2(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 6:
+     [Node  0(0): Vehicle Load( 0)]
+  -> [Node  0(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 7:
+     [Node  1(0): Vehicle Load( 0)]
+  -> [Node  1(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 8:
+     [Node  2(0): Vehicle Load( 0)]
+  -> [Node  2(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 9:
+     [Node  0(0): Vehicle Load( 0)]
+  -> [Node  0(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 10:
+     [Node  1(0): Vehicle Load( 0)]
+  -> [Node  1(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 11:
+     [Node  2(0): Vehicle Load( 0)]
+  -> [Node  2(0): Vehicle Load( 0)]
+Cost: 0
+Load: 0
+
+Route for vehicle 12:
+     [Node  0(0): Vehicle Load( 0)]
+  -> [Node 33(1400): Vehicle Load( 0)]
+  -> [Node 59(399): Vehicle Load(1400)]
+  -> [Node 60(1400): Vehicle Load(1799)]
+  -> [Node 32(799): Vehicle Load(3199)]
+  -> [Node 73(399): Vehicle Load(3998)]
+  -> [Node 67(1800): Vehicle Load(4397)]
+  -> [Node 71(399): Vehicle Load(6197)]
+  -> [Node 85(1599): Vehicle Load(6596)]
+  -> [Node 27(199): Vehicle Load(8195)]
+  -> [Node 78(799): Vehicle Load(8394)]
+  -> [Node 57(1400): Vehicle Load(9193)]
+  -> [Node 89(799): Vehicle Load(10593)]
+  -> [Node 13(1800): Vehicle Load(11392)]
+  -> [Node 41(199): Vehicle Load(13192)]
+  -> [Node 77(399): Vehicle Load(13391)]
+  -> [Node 21(1000): Vehicle Load(13790)]
+  -> [Node 38(1000): Vehicle Load(14790)]
+  -> [Node 28(199): Vehicle Load(15790)]
+  -> [Node 44(599): Vehicle Load(15989)]
+  -> [Node 90(399): Vehicle Load(16588)]
+  -> [Node 68(799): Vehicle Load(16987)]
+  -> [Node 54(799): Vehicle Load(17786)]
+  -> [Node  4(599): Vehicle Load(18585)]
+  -> [Node  0(0): Vehicle Load(19184)]
+Cost: 25624
+Load: 19184
+
+Route for vehicle 13:
+     [Node  1(0): Vehicle Load( 0)]
+  -> [Node 101(799): Vehicle Load( 0)]
+  -> [Node 49(399): Vehicle Load(799)]
+  -> [Node 97(199): Vehicle Load(1198)]
+  -> [Node 22(1000): Vehicle Load(1397)]
+  -> [Node 29(1599): Vehicle Load(2397)]
+  -> [Node 16(1199): Vehicle Load(3996)]
+  -> [Node  9(1000): Vehicle Load(5195)]
+  -> [Node 14(199): Vehicle Load(6195)]
+  -> [Node 84(1000): Vehicle Load(6394)]
+  -> [Node 52(399): Vehicle Load(7394)]
+  -> [Node 35(1199): Vehicle Load(7793)]
+  -> [Node 72(599): Vehicle Load(8992)]
+  -> [Node 62(1000): Vehicle Load(9591)]
+  -> [Node 47(199): Vehicle Load(10591)]
+  -> [Node  6(199): Vehicle Load(10790)]
+  -> [Node 75(799): Vehicle Load(10989)]
+  -> [Node 81(1199): Vehicle Load(11788)]
+  -> [Node 17(199): Vehicle Load(12987)]
+  -> [Node 64(1599): Vehicle Load(13186)]
+  -> [Node 39(1000): Vehicle Load(14785)]
+  -> [Node 20(199): Vehicle Load(15785)]
+  -> [Node 43(1199): Vehicle Load(15984)]
+  -> [Node 63(1000): Vehicle Load(17183)]
+  -> [Node 74(1199): Vehicle Load(18183)]
+  -> [Node 53(399): Vehicle Load(19382)]
+  -> [Node  1(0): Vehicle Load(19781)]
+Cost: 21322
+Load: 19781
+
+Route for vehicle 14:
+     [Node  2(0): Vehicle Load( 0)]
+  -> [Node 31(799): Vehicle Load( 0)]
+  -> [Node 98(1199): Vehicle Load(799)]
+  -> [Node 83(199): Vehicle Load(1998)]
+  -> [Node 61(1599): Vehicle Load(2197)]
+  -> [Node 55(1199): Vehicle Load(3796)]
+  -> [Node 102(1400): Vehicle Load(4995)]
+  -> [Node 94(799): Vehicle Load(6395)]
+  -> [Node 87(599): Vehicle Load(7194)]
+  -> [Node 40(1599): Vehicle Load(7793)]
+  -> [Node 56(599): Vehicle Load(9392)]
+  -> [Node 18(1199): Vehicle Load(9991)]
+  -> [Node 15(799): Vehicle Load(11190)]
+  -> [Node 11(1400): Vehicle Load(11989)]
+  -> [Node  3(599): Vehicle Load(13389)]
+  -> [Node 76(399): Vehicle Load(13988)]
+  -> [Node 65(1199): Vehicle Load(14387)]
+  -> [Node  2(0): Vehicle Load(15586)]
+Cost: 16491
+Load: 15586
+
+Total cost of all routes: 99244
+
+Measured Execute time: 1.306308sec
+
