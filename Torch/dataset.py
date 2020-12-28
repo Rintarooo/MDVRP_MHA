@@ -32,10 +32,10 @@ class Generator(Dataset):
 		 https://github.com/wouterkool/attention-learn-to-route/blob/master/problems/vrp/problem_vrp.py
 		 https://github.com/nperlmut31/Vehicle-Routing-Problem/blob/master/dataloader.py
 	"""
-	def __init__(self, device, n_samples = 5120, n_car = 15, n_depot = 1, n_customer = 20, seed = None):
+	def __init__(self, device, n_samples = 5120, n_car_each_depot = 1, n_depot = 1, n_customer = 20, capa = 1., seed = None):
 		if seed is not None:
-			self.data = generate_data(device, n_samples, n_car, n_depot, n_customer, seed)
-		self.data = generate_data(device, n_samples, n_car, n_depot, n_customer)
+			self.data = generate_data(device, n_samples, n_car_each_depot, n_depot, n_customer, capa, seed)
+		self.data = generate_data(device, n_samples, n_car_each_depot, n_depot, n_customer, capa, seed)
 		
 	def __getitem__(self, idx):
 		dic = {}
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')	
 	batch, batch_steps, n_customer = 128, 10, 20
 	dataset = Generator(device, n_samples = batch*batch_steps, 
-		n_car = 15, n_depot = 1, n_customer = n_customer)
+		n_car_each_depot = 15, n_depot = 1, n_customer = n_customer, capa = 2.)
 	data = next(iter(dataset))	
 	
 	# generate_data(device, batch = 10, n_car = 15, n_depot = 2, n_customer = 20, seed = )

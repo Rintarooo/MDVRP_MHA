@@ -76,7 +76,7 @@ class DecoderCell(nn.Module):
 			if self.env.traversed_customer.all():
 				break
 
-		assert self.env.traversed_customer.all(), "not traversed all customer"
+		assert self.env.traversed_customer.all(), f"not traversed all customer {self.env.traversed_customer}"
 		# print('self.env.car_start_node:', self.env.car_start_node)
 		self.env.return_depot_all_car()
 		# print(self.env.car_run[0])
@@ -112,7 +112,9 @@ if __name__ == '__main__':
 	embed_dim = 128
 
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+	# device = torch.device('cpu')
 	data = generate_data(device, batch = batch, n_car_each_depot = n_car_each_depot, n_depot = n_depot, n_customer = n_customer, capa = capa)
+
 	
 	decoder = DecoderCell(embed_dim, n_heads = 8, clip = 10.)
 	node_embeddings = torch.rand((batch, n_node, embed_dim), dtype = torch.float, device = device)

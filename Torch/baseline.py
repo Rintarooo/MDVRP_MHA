@@ -14,12 +14,16 @@ def load_model(device, path, embed_dim = 128, n_encode_layers = 3):
 		https://pytorch.org/docs/master/generated/torch.load.html"""
 	model_loaded = AttentionModel(embed_dim = embed_dim, n_encode_layers = n_encode_layers, n_heads = 8, tanh_clipping = 10., FF_hidden = 512)
 	model_loaded.load_state_dict(torch.load(path, map_location = device))
+	# if device == torch.device('cpu'):
+	# 	model_loaded.load_state_dict(torch.load(path, map_location = device))
+	# else:
+	# 	model_loaded.load_state_dict(torch.load(path))
 	return model_loaded
 
 class RolloutBaseline:
 	# https://github.com/wouterkool/attention-learn-to-route/blob/master/reinforce_baselines.py
 	def __init__(self, model, task, weight_dir, n_rollout_samples = 10000, 
-				embed_dim = 128, n_car = 10, n_depot = 2, n_customer = 20, warmup_beta = 0.8, wp_epochs = 1, device = 'cpu',
+				embed_dim = 128, n_car_each_depot = 3, n_depot = 2, n_customer = 20, capa = 1., warmup_beta = 0.8, wp_epochs = 1, device = 'cpu',
 				from_checkpoint = False, path_to_checkpoint = None, epoch = 0,
 				):
 		"""
@@ -51,9 +55,10 @@ class RolloutBaseline:
 
 		# Problem params
 		self.embed_dim = embed_dim
-		self.n_car = n_car
+		self.n_car_each_depot = n_car_each_depot
 		self.n_depot = n_depot
 		self.n_customer = n_customer
+		self.capa = capa
 		self.weight_dir = weight_dir
 
 		self.device = device
@@ -76,11 +81,12 @@ class RolloutBaseline:
 		
 		self.model = self.model.to(self.device)
 		# We generate a new dataset for baseline model on each baseline update to prevent possible overfitting
-		self.dataset = Generator(self.device, n_samples = self.n_rollout_samples, n_car = self.n_car, n_depot = self.n_depot, n_customer = self.n_customer, seed = None)
+		self.dataset = Generator(self.device, n_samples = self.n_rollout_samples, n_car_each_depot = self.n_car_each_depot, n_depot = self.n_depot, n_customer = self.n_customer, capa = self.capa, seed = None)
 
 		print(f'Evaluating baseline model on baseline dataset (epoch = {epoch})')
 		self.bl_vals = self.rollout(self.model, self.dataset).cpu().numpy()
 		self.mean = self.bl_vals.mean()
+		print(f"baseline model's mean score on baseline dataset: {np.round(self.mean, 4)}")
 		self.cur_epoch = epoch
 
 	def ema_eval(self, cost):
@@ -103,7 +109,7 @@ class RolloutBaseline:
 		else:
 			v_ema = 0.0
 
-		model.eval()
+		self.model.eval()
 		with torch.no_grad():
 			v_b, _ = self.model(batch, decode_type = 'greedy')
 

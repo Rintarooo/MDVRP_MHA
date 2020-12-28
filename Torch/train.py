@@ -19,9 +19,9 @@ def train(cfg):
 	model = AttentionModel(cfg.embed_dim, cfg.n_encode_layers, cfg.n_heads, cfg.tanh_clipping)
 	model.to(device)
 	baseline = RolloutBaseline(model, cfg.task, cfg.weight_dir, cfg.n_rollout_samples, 
-										cfg.embed_dim, cfg.n_car, cfg.n_depot, cfg.n_customer, cfg.warmup_beta, cfg.wp_epochs, device)
+										cfg.embed_dim, cfg.n_car_each_depot, cfg.n_depot, cfg.n_customer, cfg.capa, cfg.warmup_beta, cfg.wp_epochs, device)
 	optimizer = optim.Adam(model.parameters(), lr = cfg.lr)
-	validation_dataset = Generator(device, n_samples = cfg.n_val_samples, n_car = cfg.n_car, n_depot = cfg.n_depot, n_customer = cfg.n_customer, seed = cfg.seed)
+	validation_dataset = Generator(device, n_samples = cfg.n_val_samples, n_car_each_depot = cfg.n_car_each_depot, n_depot = cfg.n_depot, n_customer = cfg.n_customer, capa = cfg.capa, seed = cfg.seed)
 
 	def rein_loss(model, inputs, bs, t, device):
 		model.train()
@@ -34,7 +34,7 @@ def train(cfg):
 	t1 = time()
 	for epoch in range(cfg.epochs):
 		avg_loss, avg_L, val_L = [0. for _ in range(3)]
-		dataset = Generator(device, cfg.n_samples, cfg.n_car, cfg.n_depot, cfg.n_customer)
+		dataset = Generator(device, cfg.n_samples, cfg.n_car_each_depot, cfg.n_depot, cfg.n_customer, cfg.capa, None)
 		bs = baseline.eval_all(dataset)
 		bs = bs.view(-1, cfg.batch) if bs is not None else None# bs: (cfg.batch_steps, cfg.batch) or None
 		dataloader = DataLoader(dataset, batch_size = cfg.batch, shuffle = True)
@@ -65,10 +65,10 @@ def train(cfg):
 							(t2-t1)//60, (t2-t1)%60, epoch, t, avg_loss/(t+1), avg_L/(t+1)))
 				t1 = time()
 
-		baseline.epoch_callback(model, epoch)
-		weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
-		torch.save(model.state_dict(), weight_path)
-		print(f'generate {weight_path}')
+		baseline.epoch_callback(model, epoch, 2*cfg.batch)
+		# weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
+		# torch.save(model.state_dict(), weight_path)
+		# print(f'generate {weight_path}')
 		val_L = baseline.validate(model, validation_dataset, 2*cfg.batch)
 		if cfg.islogger:
 			if epoch == 0:
@@ -82,16 +82,21 @@ def train(cfg):
 
 			if(val_L < min_L):
 				min_L = val_L
+
+				# model save
+				weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
+				torch.save(model.state_dict(), weight_path)
+				print(f'generate {weight_path}')
 			else:
 				cnt += 1
-				print(f'cnt: {cnt}/10')
-				if(cnt >= 10):
+				print(f'cnt: {cnt}/20')
+				if(cnt >= 20):
 					print('early stop, average cost cant decrease anymore')
 					break
 				
 			if epoch == 0:
 				param_path = '%s%s_%s_param.csv'%(cfg.log_dir, cfg.task, cfg.dump_date)# cfg.log_dir = ./Csv/
-				print(f'generate {param_path}...')
+				print(f'generate {param_path}')
 				with open(param_path, 'w') as f:
 					f.write(''.join('%s,%s\n'%item for item in vars(cfg).items())) 
 				
