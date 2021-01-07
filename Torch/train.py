@@ -66,10 +66,8 @@ def train(cfg):
 				t1 = time()
 
 		baseline.epoch_callback(model, epoch, 3*cfg.batch)
-		# weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
-		# torch.save(model.state_dict(), weight_path)
-		# print(f'generate {weight_path}')
 		val_L = baseline.validate(model, validation_dataset, 3*cfg.batch)
+		
 		if cfg.islogger:
 			if epoch == 0:
 				val_path = '%s%s_%s_val.csv'%(cfg.log_dir, cfg.task, cfg.dump_date)#cfg.log_dir = ./Csv/
@@ -81,17 +79,16 @@ def train(cfg):
 				f.write('%d,%1.4f\n'%(epoch, val_L))
 
 			if(val_L < min_L):
-				min_L = val_L
-
 				# model save
 				weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
 				torch.save(model.state_dict(), weight_path)
-				print(f'generate {weight_path}')
+				print(f'update min val cost, {min_L}-->{val_L}\ngenerate {weight_path}')
+				min_L = val_L
 			else:
 				cnt += 1
 				print(f'cnt: {cnt}/20')
 				if(cnt >= 20):
-					print('early stop, average cost cant decrease anymore')
+					print('early stop, average val cost cant decrease anymore')
 					break
 				
 			if epoch == 0:
