@@ -12,7 +12,7 @@
 
 ## Usage
 
-### train
+### train phase
 
 First move to `Torch` dir. 
 
@@ -32,7 +32,7 @@ you would see the pickle file in `Pkl` dir. now you can start training the model
 python train.py -p Pkl/***.pkl
 ```
 
-### inference
+### inference phase
 Generate test data
   
 (GA -> txt file, Torch and Ortools -> json file).
@@ -45,6 +45,7 @@ Plot prediction of the pretrained model
 ```
 cd Torch && python plot.py -p Weights/***.pt -t data/***.json -b 128
 ```
+Compare the results 
 ```
 cd GA && python main.py data/***.txt
 ```
