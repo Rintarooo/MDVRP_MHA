@@ -13,9 +13,6 @@ import sys
 sys.path.append('../')
 from dataclass import TorchJson
 
-
-# python plot.py -b 128 -p Weights/VRP50_train_epoch75.pt -t data/
-
 # def get_clean_path(arr):
 # 	"""Returns extra zeros from path.
 # 	   Dynamical model generates duplicated zeros for several graphs when obtaining partial solutions.
@@ -88,28 +85,6 @@ def opt2_swap(route, dist_mat):
 					route[i1:j1] = tmp[::-1]# tmp in inverse order
 					improved = True 
 	return route
-
-# def opt2_swap(route, dist_mat): 
-# 	size = len(route)
-# 	for i in range(size - 2):
-# 		i1 = i + 1
-# 		a = route[i]
-# 		b = route[i1]
-# 		for j in range(i + 2, size):
-# 			j1 = j + 1
-# 			if j == size - 1:
-# 				j1 = 0
-
-# 			c = route[j]
-# 			d = route[j1]
-# 			if i == 0 and j1 == 0: continue# if i == j1
-# 			if(dist_mat[a][c] + dist_mat[b][d] < dist_mat[a][b] + dist_mat[c][d]):
-# 				""" i i+1 j j+1
-# 					swap(i+1, j)
-# 				"""
-# 				tmp = route[i1:j1]
-# 				route[i1:j1] = tmp[::-1]# tmp in inverse order 
-# 	return route
 
 def plot_route(data, pi, costs, title, t1, t2, idx_in_batch = 0, opt = False):
 	"""Plots journey of agent
