@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import math
 import json
-
+import sys
 
 class TorchJson():
 	def __init__(self, json_path):
@@ -116,10 +116,11 @@ def get_dist(n1, n2):
 	if isinstance(n1, torch.Tensor):
 		return torch.sqrt((x2-x1).pow(2)+(y2-y1).pow(2))
 	elif isinstance(n1, (list, np.ndarray)):
+		# return math.sqrt((x2-x1)**2+(y2-y1)**2)# pow(hoge,2)
 		return math.sqrt(pow(x2-x1,2)+pow(y2-y1,2))
 	else:
 		raise TypeError
-	# return math.sqrt((x2-x1)**2+(y2-y1)**2)# pow(hoge,2)
+	
 	
 def get_dist_mat(data, scale_up = 1e4):# digit = 2 
 	xy = np.concatenate([data['depot_xy'], data['customer_xy']], axis = 0)
@@ -138,12 +139,13 @@ def get_dist_mat(data, scale_up = 1e4):# digit = 2
 
 if __name__ == '__main__':
 	device = torch.device('cpu')# torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')	
-	n_depot = 3
-	n_car_each_depot = 5#12
-	n_customer = 100
-	seed = 0
-	capa = 2.
-
+	assert len(sys.argv) >= 2, 'len(sys.argv) should be >= 2'
+	n_depot = sys.argv[1]# 3
+	n_car_each_depot = sys.argv[2]# 5
+	n_customer = sys.argv[3]# 100
+	seed = sys.argv[4]# 0
+	capa = sys.argv[5]# 2.
+	
 	from Torch.dataset import generate_data
 	data = generate_data(device, batch = 1, n_car_each_depot = n_car_each_depot, n_depot = n_depot, n_customer = n_customer, capa = capa, seed = seed)
 	
