@@ -15,10 +15,6 @@ customers = None
 population = None
 
 
-def set_population_size(size):
-    population_size = size
-
-
 def load_problem(path):
     global depots, customers
     depots = []
@@ -58,7 +54,6 @@ def find_closest_depot(pos):
 
 def is_consistent_route(route, depot, include_reason=False):
     # print('route:', route)
-    # print('')
     route_load = 0
     route_duration = 0
     last_pos = depot.pos
