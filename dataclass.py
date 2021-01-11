@@ -140,11 +140,12 @@ def get_dist_mat(data, scale_up = 1e4):# digit = 2
 if __name__ == '__main__':
 	device = torch.device('cpu')# torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')	
 	assert len(sys.argv) >= 2, 'len(sys.argv) should be >= 2'
-	n_depot = sys.argv[1]# 3
-	n_car_each_depot = sys.argv[2]# 5
-	n_customer = sys.argv[3]# 100
-	seed = sys.argv[4]# 0
-	capa = sys.argv[5]# 2.
+	print(sys.argv)
+	n_depot = int(sys.argv[1])# 3
+	n_car_each_depot = int(sys.argv[2])# 5
+	n_customer = int(sys.argv[3])# 100
+	seed = int(sys.argv[4])# 0
+	capa = float(sys.argv[5])# 2.
 	
 	from Torch.dataset import generate_data
 	data = generate_data(device, batch = 1, n_car_each_depot = n_car_each_depot, n_depot = n_depot, n_customer = n_customer, capa = capa, seed = seed)
