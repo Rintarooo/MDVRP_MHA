@@ -150,7 +150,7 @@ if __name__ == '__main__':
 	from Torch.dataset import generate_data
 	data = generate_data(device, batch = 1, n_car_each_depot = n_car_each_depot, n_depot = n_depot, n_customer = n_customer, capa = capa, seed = seed)
 	
-	basename = f'n{n_customer}d{n_depot}c{n_car_each_depot}D{int(capa)}.json'
+	basename = f'n{n_customer}d{n_depot}c{n_car_each_depot}D{int(capa)}s{seed}.json'
 	dirname1 = 'Torch/data/'
 	dirname2 = 'Ortools/data/'
 	dirname3 = 'GA/data/'

@@ -55,6 +55,7 @@ cd Ortools && python main.py -p data/***.json
 
 ## Reference
 ### DRL_MHA
+* https://github.com/Rintarooo/VRP_DRL_MHA
 * https://github.com/wouterkool/attention-learn-to-route
 * https://github.com/d-eremeev/ADM-VRP
 * https://qiita.com/ohtaman/items/0c383da89516d03c3ac0
