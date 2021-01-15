@@ -8,7 +8,7 @@
 * numpy
 * plotly (only for plotting)
 * matplotlib (only for plotting)
-
+* pandas (only for mean of test score)
 
 ## Usage
 

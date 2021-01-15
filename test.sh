@@ -40,6 +40,7 @@ elif [ "$1" = "ga" ]; then
 			python GA/main.py GA/data/${filename}.txt ${write_csv}
 		fi
 	done
+	python Csv/mean.py ${write_csv}
 else
 	echo "command: ${0} g or ${0} rm"
 fi
