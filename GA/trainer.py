@@ -444,7 +444,7 @@ def route_merge(p):
 
 def train(generations, crossover_rate, heuristic_mutate_rate, inversion_mutate_rate,
           depot_move_mutate_rate, best_insertion_mutate_rate, route_merge_rate, t1,
-          intermediate_plots=False, log=True):
+          intermediate_plots=False, write_csv=None, log=True):
     global population
     for g in range(generations):
         if log and g % 10 == 0:
@@ -494,21 +494,27 @@ def train(generations, crossover_rate, heuristic_mutate_rate, inversion_mutate_r
     population.sort(key=lambda x: -x[1])
     print("\n\nFinished training")
 
-    best_solution = None
+    best_score, best_solution = None, None
     if is_consistent(population[0][0]):
-        print(f'Best score: {population[0][1]}, best distance: {evaluate(population[0][0], True)}')
         best_solution = population[0][0]
+        best_score = population[0][1]
+        print(f'Best score: {best_score}, best distance: {evaluate(best_solution, True)}')
     else:
         for c in population:
-            if is_consistent(c[0]):
-                print(f'Best score: {c[1]}, best distance: {evaluate(c[0], True)}')
+            if is_consistent(c[0]): 
                 best_solution = c[0]
+                best_score = c[1]
+                print(f'Best score: {best_score}, best distance: {evaluate(best_solution, True)}')
                 break
         else:
             print('Found no consistent solutions.')
     print(f'inference time: {time()-t1}s')
     if best_solution:
-        plot(best_solution)
+        if write_csv is not None:
+            with open(write_csv, 'a') as f:
+                f.write(f'{time()-t1},{best_score}\n')
+        else:
+            plot(best_solution)
     return best_solution
 
 

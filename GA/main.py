@@ -17,7 +17,7 @@ if __name__ == '__main__':
     trainer.initialize()
     best_solution = trainer.train(generations, crossover_rate, heuristic_mutate_rate, inversion_mutate_rate,
                                   depot_move_mutate_rate, best_insertion_mutate_rate, route_merge_rate, t1,
-                                  intermediate_plots=True)
+                                  intermediate_plots=True, write_csv = sys.argv[2])
     
     # for i in range(15, 24):
     #     if i < 10:
