@@ -5,10 +5,9 @@ n_depot=3
 n_car_each_depot=5
 n_customer=20
 #seed=0
-capa=1
 #capa is float value
+capa=1
 
-# echo "n_depot: ${n_depot}"
 if [ "$1" = "g" ]; then
 	for seed in $(seq 1 10)
 	do
@@ -24,6 +23,24 @@ elif [ "$1" = "rm" ]; then
 		rm -rf Ortools/data/${filename}.json
 		rm -rf GA/data/${filename}.txt
 	done
+elif [ "$1" = "g1" ]; then
+	seed=1
+	python dataclass.py ${n_depot} ${n_car_each_depot} \
+		${n_customer} ${seed} ${capa}
+elif [ "$1" = "ga" ]; then
+	write_csv="CSV/ga_n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}.csv"
+	if [ -e ${write_csv} ]; then
+		rm -rf ${write_csv}
+	fi
+
+	for seed in $(seq 1 10)
+	do
+		filename=n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}s${seed}
+		if [ -e "GA/data/${filename}.txt" ]; then
+			python GA/main.py GA/data/${filename}.txt ${write_csv}
+		fi
+	done
+	python Csv/mean.py ${write_csv}
 else
 	echo "command: ${0} g or ${0} rm"
 fi
