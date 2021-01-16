@@ -512,7 +512,7 @@ def train(generations, crossover_rate, heuristic_mutate_rate, inversion_mutate_r
     if best_solution:
         if write_csv is not None:
             with open(write_csv, 'a') as f:
-                f.write(f'{time()-t1},{best_score}\n')
+                f.write(f'{time()-t1},{evaluate(best_solution, True)}\n')
         else:
             plot(best_solution)
     return best_solution

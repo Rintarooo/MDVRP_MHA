@@ -70,7 +70,8 @@ elif [ "$1" = "to" ]; then
 			python Torch/plot.py -p Torch/Weights/VRP100_epoch17.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt}
 		fi
 	done
-	# python Csv/get_mean.py ${write_csv}
+	python Csv/torch_mean.py ${write_csv}
+	python Csv/torch_mean.py ${write_csv_2opt}
 else
 	echo "command: ${0} g or ${0} rm"
 fi
