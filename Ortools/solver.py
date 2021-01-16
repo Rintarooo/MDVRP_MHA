@@ -8,8 +8,8 @@ from ortools.constraint_solver.pywrapcp \
 from ortools.constraint_solver.routing_enums_pb2 \
 	import FirstSolutionStrategy, LocalSearchMetaheuristic
 
-import sys
-sys.path.append('../')
+# import sys
+# sys.path.append('../')
 from dataclass import OrtoolsJson# from data import load_json
 
 from print import print_solution
@@ -104,12 +104,13 @@ def add_time_window_constraints(
 def parse_args() -> argparse.Namespace:
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-p', '--path', help='JSON file path of data')
-	parser.add_argument('-g', '--graph', help='export images of the network and the routes of vehicles', action='store_true',)
+	parser.add_argument('-g', '--graph', help='export images of the network and the routes of vehicles', action='store_true')
 	parser.add_argument('--gls',
 		help="enable Guided Local Search (Note: This could take a long time, so it's a good idea "
 			  'to use --gls with -v to see the progress of a search)',
 		action='store_true')
 	parser.add_argument('-v', '--verbose', help='enable verbose output', action='store_true')
+	parser.add_argument('-c', '--write_csv', default = None, help='export csv')
 	return parser.parse_args()
 
 if __name__ == '__main__':
@@ -178,8 +179,12 @@ if __name__ == '__main__':
 	if routing.status() == 1 and assignment:
 		t2 = time()
 		# Print the solution
-		print_solution(data, routing, manager, assignment)
+		best_score = None
+		best_score = print_solution(data, routing, manager, assignment)
 		print(f'Measured Execute time: {round(t2-t1, 6)}sec')
+		if args.write_csv is not None:
+			with open(args.write_csv, 'a') as f:
+				f.write(f'{t2-t1},{best_score/1e4}\n')
 
 		# Draw network and route graphs
 		if args.graph:

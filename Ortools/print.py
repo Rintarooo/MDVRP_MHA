@@ -74,6 +74,7 @@ def print_solution(
 			print(plan_output)
 
 	print(f'Total cost of all routes: {total_cost}\n')
+	return total_cost
 	if 'time_windows' in data.keys():
 		print('*** format ***: \n[Node node_index(demand)TW(Time Window min, max): Vehicle Load(accumulated load) and Arrived(time)]')
 		print(f'Total time of all routes: {total_time} min')

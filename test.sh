@@ -28,7 +28,7 @@ elif [ "$1" = "g1" ]; then
 	python dataclass.py ${n_depot} ${n_car_each_depot} \
 		${n_customer} ${seed} ${capa}
 elif [ "$1" = "ga" ]; then
-	write_csv="CSV/ga_n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}.csv"
+	write_csv="Csv/n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}_ga.csv"
 	if [ -e ${write_csv} ]; then
 		rm -rf ${write_csv}
 	fi
@@ -40,7 +40,21 @@ elif [ "$1" = "ga" ]; then
 			python GA/main.py GA/data/${filename}.txt ${write_csv}
 		fi
 	done
-	python Csv/mean.py ${write_csv}
+	python Csv/get_mean.py ${write_csv}
+elif [ "$1" = "or" ]; then
+	write_csv="Csv/n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}_or.csv"
+	if [ -e ${write_csv} ]; then
+		rm -rf ${write_csv}
+	fi
+
+	for seed in $(seq 1 10)
+	do
+		filename=n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}s${seed}
+		if [ -e "Ortools/data/${filename}.json" ]; then
+			python Ortools/solver.py -p Ortools/data/${filename}.json -c ${write_csv}
+		fi
+	done
+	python Csv/get_mean.py ${write_csv}
 else
 	echo "command: ${0} g or ${0} rm"
 fi
