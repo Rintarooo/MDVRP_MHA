@@ -33,7 +33,7 @@ from dataclass import TorchJson
 # 		output.append(0)# insert 0 at the end of the array
 # 	return output
 
-def clear_each_route(arr):
+def clear_route(arr):
 	dst = []
 	for i in range(len(arr)-1):
 		if arr[i] != arr[i+1]:
@@ -86,60 +86,59 @@ def opt2_swap(route, dist_mat):
 					improved = True 
 	return route
 
-def plot_route(data, pi, costs, title, t1, t2, idx_in_batch = 0, opt = False):
-	"""Plots journey of agent
-	Args:
-		data: dataset of graphs
-		pi: (batch, decode_step) # tour
-		idx_in_batch: index of graph in data to be plotted
-	"""
-	cost = costs[idx_in_batch].cpu().numpy()
+def apply_2opt(tup):
+	routes, depot_xy, customer_xy, demands, xy, cost, pi, idx_in_batch = tup
+	dist_mat = get_dist_mat(xy)
+	new_routes = []
+	for route in routes:# apply 2-opt to each route
+		if len(route) > 0: new_routes.append(opt2_swap(route, dist_mat))
+	print('routes(2opt): ', new_routes)
 	
-	# Remove extra zeros
-	routes = []
-	pi_cars = pi[idx_in_batch].cpu().numpy()
-	for each_car_pi in pi_cars:
-		routes.append(clear_each_route(each_car_pi))
-	print('routes: ', routes)
+	cost = 0.
+	for i, route in enumerate(new_routes, 1):
+		coords = xy[[int(x) for x in route]]
+		# Calculate length of each agent loop
+		lengths = np.sqrt(np.sum(np.diff(coords, axis = 0) ** 2, axis = 1))
+		total_length = np.sum(lengths)
+		cost += total_length
+	return (new_routes, depot_xy, customer_xy, demands, xy, cost, pi, idx_in_batch)
+	
 
-	# ['depot_xy', 'customer_xy', 'demand', 'car_start_node', 'car_capacity']
+def get_more_info(cost, pi, idx_in_batch):
+	
+	# Remove unneeded values
+	routes = []
+	for pi_of_each_car in pi:
+		route = clear_route(pi_of_each_car)
+		if len(route) > 0:
+			routes.append(route)
+	print('routes: ', routes)
+	
+	# data.keys(), ['depot_xy', 'customer_xy', 'demand', 'car_start_node', 'car_capacity']
 	depot_xy = data['depot_xy'][idx_in_batch].cpu().numpy()
 	customer_xy = data['customer_xy'][idx_in_batch].cpu().numpy()
 	demands = data['demand'][idx_in_batch].cpu().numpy()
-	customer_labels = ['(' + str(demand) + ')' for demand in demands.round(2)]
-	
 	xy = np.concatenate([depot_xy, customer_xy], axis = 0)
-	
-	print('cost(without 2opt): ', cost)
+	return (routes, depot_xy, customer_xy, demands, xy, cost, pi, idx_in_batch)
 
-	if opt:# 2-opt
-		dist_mat = get_dist_mat(xy)
+def plot_route(tup, title):
+	routes, depot_xy, customer_xy, demands, xy, cost, pi, idx_in_batch = tup
 
-		new_routes = []
-		for route in routes:# apply 2-opt to each route
-			if len(route) > 0: new_routes.append(opt2_swap(route, dist_mat))
-		routes = new_routes
-	print('routes: ', routes)
-	print('inference time: ', time()-t1)
-	print(f'\ninference time(without loading model): {time()-t2}s')
-
+	customer_labels = ['(' + str(demand) + ')' for demand in demands.round(2)]
 	path_traces = []
-	cost = 0.
 	for i, route in enumerate(routes, 1):
 		coords = xy[[int(x) for x in route]]
 
 		# Calculate length of each agent loop
 		lengths = np.sqrt(np.sum(np.diff(coords, axis = 0) ** 2, axis = 1))
 		total_length = np.sum(lengths)
-		cost += total_length
-
+		
 		path_traces.append(go.Scatter(x = coords[:, 0],
 									y = coords[:, 1],
 									mode = 'markers+lines',
 									name = f'Vehicle{i}: Length = {total_length:.3f}',
 									opacity = 1.0))
-	print('cost: ', cost)
-
+	
 	trace_points = go.Scatter(x = customer_xy[:, 0],
 							  y = customer_xy[:, 1],
 							  mode = 'markers+text', 
@@ -164,20 +163,20 @@ def plot_route(data, pi, costs, title, t1, t2, idx_in_batch = 0, opt = False):
 	
 	layout = go.Layout(
 						# title = dict(text = f'<b>VRP{customer_xy.shape[0]} depot{depot_xy.shape[0]} {title}, Total Length = {cost:.3f}</b>', x = 0.5, y = 1, yanchor = 'bottom', yref = 'paper', pad = dict(b = 10)),#https://community.plotly.com/t/specify-title-position/13439/3
-					   title = dict(text = f'<b>VRP{customer_xy.shape[0]} depot{depot_xy.shape[0]} {title}, Total Length = {cost:.3f}</b>', x = 0.5, y = 1, yanchor = 'bottom', xref = 'paper', yref = 'paper', pad = dict(b = 10)),
-					   # xaxis = dict(title = 'X', range = [0, 1], ticks='outside'),
-					   # yaxis = dict(title = 'Y', range = [0, 1], ticks='outside'),#https://kamino.hatenablog.com/entry/plotly_for_report
-					   xaxis = dict(title = 'X', range = [0, 1], linecolor = 'black', showgrid=False, ticks='outside', linewidth=1, mirror=True),
-					   yaxis = dict(title = 'Y', range = [0, 1], linecolor = 'black', showgrid=False, ticks='outside', linewidth=1, mirror=True),
-					   showlegend = True,
-					   width = 750,
-					   height = 700,
-					   autosize = True,
-					   template = "plotly_white",
-					   legend = dict(x = 1.05, xanchor = 'left', y =0, yanchor = 'bottom', bordercolor = 'black', borderwidth = 1)
-					   # legend = dict(x = 1, xanchor = 'right', y =0, yanchor = 'bottom', bordercolor = '#444', borderwidth = 0)
-					   # legend = dict(x = 0, xanchor = 'left', y =0, yanchor = 'bottom', bordercolor = '#444', borderwidth = 0)
-					   )
+						title = dict(text = f'<b>VRP{customer_xy.shape[0]} depot{depot_xy.shape[0]} {title}, Total Length = {cost:.3f}</b>', x = 0.5, y = 1, yanchor = 'bottom', xref = 'paper', yref = 'paper', pad = dict(b = 10)),
+						# xaxis = dict(title = 'X', range = [0, 1], ticks='outside'),
+						# yaxis = dict(title = 'Y', range = [0, 1], ticks='outside'),#https://kamino.hatenablog.com/entry/plotly_for_report
+						xaxis = dict(title = 'X', range = [0, 1], linecolor = 'black', showgrid=False, ticks='outside', linewidth=1, mirror=True),
+						yaxis = dict(title = 'Y', range = [0, 1], linecolor = 'black', showgrid=False, ticks='outside', linewidth=1, mirror=True),
+						showlegend = True,
+						width = 750,
+						height = 700,
+						autosize = True,
+						template = "plotly_white",
+						legend = dict(x = 1.05, xanchor = 'left', y =0, yanchor = 'bottom', bordercolor = 'black', borderwidth = 1)
+						# legend = dict(x = 1, xanchor = 'right', y =0, yanchor = 'bottom', bordercolor = '#444', borderwidth = 0)
+						# legend = dict(x = 0, xanchor = 'left', y =0, yanchor = 'bottom', bordercolor = '#444', borderwidth = 0)
+						)
 
 	data = [trace_points, trace_depo] + path_traces
 	fig = go.Figure(data = data, layout = layout)
@@ -188,8 +187,8 @@ if __name__ == '__main__':
 	t1 = time()
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 	pretrained = load_model(device, args.path, embed_dim = 128, n_encode_layers = 3)
-	
 	print(f'model loading time:{time()-t1}s')
+	
 	t2 = time()
 	if args.txt is not None:
 		hoge = TorchJson(args.txt)
@@ -215,12 +214,36 @@ if __name__ == '__main__':
 	# data = list(map(lambda x: x.to(device), data))
 	pretrained.eval()
 	with torch.no_grad():
-		costs, _, pi = pretrained(data, return_pi = True, decode_type = args.decode_type)
-		# print('costs:', costs)
-		idx_in_batch = torch.argmin(costs, dim = 0)
-		print(f'decode type: {args.decode_type}\nminimum cost: {costs[idx_in_batch]:.3f} and idx: {idx_in_batch} out of {args.batch} solutions')
-		# print(f'{pi[idx_in_batch]}\ninference time: {time()-t1}s')
-		print(f'\ninference time: {time()-t1}s')
-		print(f'\ninference time(without loading model): {time()-t2}s')
-		plot_route(data, pi, costs, 'Pretrained', t1, t2, idx_in_batch, True)
-		
+		costs, _, pis = pretrained(data, return_pi = True, decode_type = args.decode_type)
+	# print('costs:', costs)
+	idx_in_batch = torch.argmin(costs, dim = 0)
+	cost = costs[idx_in_batch].cpu().numpy()
+	if args.write_csv is not None:
+		with open(args.write_csv, 'a') as f:
+			f.write(f'{time()-t1},{time()-t2},{cost}\n')
+	print(f'decode type: {args.decode_type}\nminimum cost(without 2opt): {cost:.3f}\nidx: {idx_in_batch} out of {args.batch} solutions')
+	print(f'\ninference time: {time()-t1}s')
+	print(f'inference time(without loading model): {time()-t2}s')
+	
+	pi = pis[idx_in_batch].cpu().numpy()
+	tup = get_more_info(cost, pi, idx_in_batch)
+	if args.write_csv is None:
+		title = 'Pretrained'
+		plot_route(tup, title)
+		print('plot time: ', time()-t1)
+		print(f'plot time(without loading model): {time()-t2}s')
+
+	tup = apply_2opt(tup)
+	cost = tup[-3]
+	if args.write_csv_2opt is not None:
+		with open(args.write_csv_2opt, 'a') as f:
+			f.write(f'{time()-t1},{time()-t2},{cost}\n')
+	print(f'minimum cost(without 2opt): {cost:.3f}')
+	print('inference time: ', time()-t1)
+	print(f'inference time(without loading model): {time()-t2}s')
+
+	if args.write_csv_2opt is None:
+		title = 'Pretrained'
+		plot_route(tup, title)
+		print('plot time: ', time()-t1)
+		print(f'plot time(without loading model): {time()-t2}s')

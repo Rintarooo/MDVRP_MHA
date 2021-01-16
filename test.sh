@@ -55,6 +55,22 @@ elif [ "$1" = "or" ]; then
 		fi
 	done
 	python Csv/get_mean.py ${write_csv}
+elif [ "$1" = "to" ]; then
+	write_csv="Csv/n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}_to.csv"
+	write_csv_2opt="Csv/n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}_to_2opt.csv"
+	if [ -e ${write_csv} ]; then
+		rm -rf ${write_csv}
+		rm -rf ${write_csv_2opt}
+	fi
+
+	for seed in $(seq 1 10)
+	do
+		filename=n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}s${seed}
+		if [ -e "Torch/data/${filename}.json" ]; then
+			python Torch/plot.py -p Torch/Weights/VRP100_epoch17.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt}
+		fi
+	done
+	# python Csv/get_mean.py ${write_csv}
 else
 	echo "command: ${0} g or ${0} rm"
 fi

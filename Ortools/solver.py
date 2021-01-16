@@ -110,7 +110,7 @@ def parse_args() -> argparse.Namespace:
 			  'to use --gls with -v to see the progress of a search)',
 		action='store_true')
 	parser.add_argument('-v', '--verbose', help='enable verbose output', action='store_true')
-	parser.add_argument('-c', '--write_csv', default = None, help='export csv')
+	parser.add_argument('-c', '--write_csv', help='export csv')
 	return parser.parse_args()
 
 if __name__ == '__main__':

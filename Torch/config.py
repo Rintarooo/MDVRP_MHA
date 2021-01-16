@@ -90,7 +90,8 @@ def test_parser():
 	parser.add_argument('-p', '--path', metavar = 'P', type = str, required = True,  
 						help = 'Weights/VRP***_epoch***.pt, pt file required')
 	parser.add_argument('-t', '--txt', metavar = 'T', type = str, help = 'if you wanna test out on text file, example: data/***.json')
-	
+	parser.add_argument('-wc', '--write_csv', metavar = 'WC', type = str, help = 'export csv example: Csv/***_mha.csv')
+	parser.add_argument('-wc2', '--write_csv_2opt', metavar = 'WC2', type = str, help = 'export csv example: Csv/***_mha2opt.csv')
 	args = parser.parse_args()
 	return args
 
