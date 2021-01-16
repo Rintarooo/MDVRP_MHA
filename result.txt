@@ -5,12 +5,12 @@ n_customer = 100
 seed = 0
 capa = 2.
 
-(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA$ python dataclass.py 
+(ev1)  :~/Python/GitHub/MDVRP_MHA$ python dataclass.py 
 generate Torch/data/n100d3c5D2.json ...
 generate Ortools/data/n100d3c5D2.json ...
 generate GA/data/n100d3c5D2.txt ...
-(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA$ cd Torch/
-(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/Torch$ python plot.py -p Weights/VRP100_epoch17.pt -t data/n100d3c5D2.json -b 512
+(ev1)  :~/Python/GitHub/MDVRP_MHA$ cd Torch/
+(ev1)  :~/Python/GitHub/MDVRP_MHA/Torch$ python plot.py -p Weights/VRP100_epoch17.pt -t data/n100d3c5D2.json -b 512
 model loading time:3.378108501434326s
 data generate time:3.3792295455932617s
 decode type: sampling
@@ -27,8 +27,8 @@ inference time:  4.766218662261963
 inference time(without loading model): 1.3880784511566162s
 cost:  10.27188754081726
 Opening in existing browser session.
-(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/Torch$ cd ../GA/
-(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/GA$ python main.py data/n100d3c5D2.txt
+(ev1)  :~/Python/GitHub/MDVRP_MHA/Torch$ cd ../GA/
+(ev1)  :~/Python/GitHub/MDVRP_MHA/GA$ python main.py data/n100d3c5D2.txt
 [Generation 0] Best score: 0.0007925945219342319 Consistent: True
 [Generation 10] Best score: 0.0008065272541342722 Consistent: True
 [Generation 20] Best score: 0.0008201920934108736 Consistent: True
@@ -91,8 +91,8 @@ depot No., visit route
 2 [99, 51, 79, 73]
 3 [10, 80, 56, 5, 22, 97, 64, 94, 50, 82, 12, 49, 3, 91, 78, 88, 66, 52, 2, 63]
 3 [81, 59, 53, 100, 13, 16, 54, 38, 85, 92, 96, 29]
-(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/GA$ cd ../Ortools/
-(ev1) rintaro@rintaro-X8DA3:~/Python/GitHub/MDVRP_MHA/Ortools$ python solver.py -p data/n100d3c5D2.json
+(ev1)  :~/Python/GitHub/MDVRP_MHA/GA$ cd ../Ortools/
+(ev1)  :~/Python/GitHub/MDVRP_MHA/Ortools$ python solver.py -p data/n100d3c5D2.json
 Route for vehicle 0:
      [Node  0(0): Vehicle Load( 0)]
   -> [Node 100(1000): Vehicle Load( 0)]
