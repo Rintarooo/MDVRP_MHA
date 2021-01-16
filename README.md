@@ -1,4 +1,7 @@
-# MDVRP solver with Multi-Head Attention
+# MDVRP solver with Multi-Head Attention, GA, OR-Tools
+
+![newplot](https://user-images.githubusercontent.com/51239551/104798863-88ed3c00-580d-11eb-852c-09c88f2f9afc.png)
+
 
 ## Dependencies
 
@@ -58,7 +61,7 @@ cd Ortools && python main.py -p data/***.json
 * https://github.com/Rintarooo/VRP_DRL_MHA
 * https://github.com/wouterkool/attention-learn-to-route
 * https://github.com/d-eremeev/ADM-VRP
-* https://qiita.com/ohtaman/items/0c383da89516d03c3ac0
+* https://qiita.com/ohtaman/items/0c383da89516d03c3ac0 (written in Japanese)
 
 ### Google Or-Tools
 * https://github.com/skatsuta/vrp-solver
