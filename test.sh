@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "running $0 ..."
-n_depot=3
-n_car_each_depot=5
+n_depot=1
+n_car_each_depot=7
 n_customer=20
 #seed=0
 #capa is float value
@@ -67,6 +67,7 @@ elif [ "$1" = "to" ]; then
 	do
 		filename=n${n_customer}d${n_depot}c${n_car_each_depot}D${capa}s${seed}
 		if [ -e "Torch/data/${filename}.json" ]; then
+			# python Torch/plot.py -p Torch/Weights/VRP50_train_epoch66.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt} -b 512
 			python Torch/plot.py -p Torch/Weights/VRP20_epoch23.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt} -b 512
 		fi
 	done
