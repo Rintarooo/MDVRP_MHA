@@ -5,6 +5,8 @@ if __name__ == '__main__':
 	df = pd.read_csv(sys.argv[1], sep = ',', header = None)
 	mean_time = sum(df.iloc[:,0].values)/len(df.iloc[:,0])
 	mean_cost = sum(df.iloc[:,1].values)/len(df.iloc[:,1])
+	# mean_time = round(sum(df.iloc[:,0].values)/len(df.iloc[:,0]), 3)
+	# mean_cost = round(sum(df.iloc[:,1].values)/len(df.iloc[:,1]), 3)
 	
 	dfnew = pd.DataFrame([['mean time', 'mean cost'], [mean_time, mean_cost]])
 	df = df.append(dfnew, ignore_index=True)
