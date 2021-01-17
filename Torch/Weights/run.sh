@@ -14,3 +14,16 @@ echo "running $0"
 
 #rm -rf ${rm_files}
 
+
+
+
+
+# preserve files
+file=
+rm_files=
+cp ${file} ../
+
+# remove
+rm -rf ${rm_files}
+
+mv ../${file} .
