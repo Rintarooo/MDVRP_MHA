@@ -10,8 +10,6 @@ from baseline import RolloutBaseline
 from dataset import generate_data, Generator
 from config import Config, load_pkl, train_parser
 
-INF = 100000.
-
 def train(cfg):
 	torch.backends.cudnn.benchmark = True
 	
@@ -22,6 +20,13 @@ def train(cfg):
 										cfg.embed_dim, cfg.n_car_each_depot, cfg.n_depot, cfg.n_customer, cfg.capa, cfg.warmup_beta, cfg.wp_epochs, device)
 	optimizer = optim.Adam(model.parameters(), lr = cfg.lr)
 	validation_dataset = Generator(device, n_samples = cfg.n_val_samples, n_car_each_depot = cfg.n_car_each_depot, n_depot = cfg.n_depot, n_customer = cfg.n_customer, capa = cfg.capa, seed = cfg.seed)
+	val_L = baseline.validate(model, validation_dataset, 3*cfg.batch)
+	if cfg.islogger:
+		val_path = '%s%s_%s_val.csv'%(cfg.log_dir, cfg.task, cfg.dump_date)#cfg.log_dir = ./Csv/
+		print(f'generate {val_path}')
+		with open(val_path, 'w') as f:
+			f.write('epoch,validation_cost\n')
+			f.write('0,%1.4f\n'%(val_L))
 
 	def rein_loss(model, inputs, bs, t, device):
 		model.train()
@@ -30,7 +35,7 @@ def train(cfg):
 		return ((L - b.to(device)) * ll).mean(), L.mean()
 	
 	cnt = 0
-	min_L = INF
+	min_L = val_L
 	t1 = time()
 	for epoch in range(cfg.epochs):
 		avg_loss, avg_L, val_L = [0. for _ in range(3)]
@@ -69,29 +74,24 @@ def train(cfg):
 		val_L = baseline.validate(model, validation_dataset, 3*cfg.batch)
 		
 		if cfg.islogger:
-			if epoch == 0:
-				val_path = '%s%s_%s_val.csv'%(cfg.log_dir, cfg.task, cfg.dump_date)#cfg.log_dir = ./Csv/
-				print(f'generate {val_path}')
-				with open(val_path, 'w') as f:
-					f.write('epoch,validation_cost\n')
-			
 			with open(val_path, 'a') as f:
 				f.write('%d,%1.4f\n'%(epoch, val_L))
 
-			if(val_L < min_L):
-				# model save
-				weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
-				torch.save(model.state_dict(), weight_path)
-				print(f'update min val cost, {min_L}-->{val_L}\ngenerate {weight_path}')
-				min_L = val_L
-			else:
-				cnt += 1
-				print(f'cnt: {cnt}/20')
-				if(cnt >= 20):
-					print('early stop, average val cost cant decrease anymore')
-					break
+		if(val_L < min_L):
+			# model save
+			weight_path = '%s%s_epoch%s.pt'%(cfg.weight_dir, cfg.task, epoch)
+			torch.save(model.state_dict(), weight_path)
+			print(f'update min val cost, {min_L}-->{val_L}\ngenerate {weight_path}')
+			min_L = val_L
+		else:
+			cnt += 1
+			print(f'cnt: {cnt}/10')
+			if(cnt >= 10):
+				print('early stop, average val cost cant decrease anymore')
+				break
 				
-			if epoch == 0:
+		if epoch == 0:
+			if cfg.islogger:
 				param_path = '%s%s_%s_param.csv'%(cfg.log_dir, cfg.task, cfg.dump_date)# cfg.log_dir = ./Csv/
 				print(f'generate {param_path}')
 				with open(param_path, 'w') as f:

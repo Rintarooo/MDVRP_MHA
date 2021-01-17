@@ -16,7 +16,7 @@ def arg_parser():
 	parser.add_argument('-b', '--batch', metavar = 'B', type = int, default = 512, help = 'batch size')
 	parser.add_argument('-s', '--batch_steps', metavar = 'S', type = int, default = 2500, help = 'number of samples = batch * batch_steps')
 	parser.add_argument('-v', '--batch_verbose', metavar = 'V', type = int, default = 10, help = 'print and logging during training process')
-	parser.add_argument('-e', '--epochs', metavar = 'E', type = int, default = 20, help = 'total number of samples = epochs * number of samples')
+	parser.add_argument('-e', '--epochs', metavar = 'E', type = int, default = 100, help = 'total number of samples = epochs * number of samples')
 
 	parser.add_argument('-nr', '--n_rollout_samples', metavar = 'NR', type = int, default = 10000, help = 'baseline rollout number of samples')
 	parser.add_argument('-nv', '--n_val_samples', metavar = 'NV', type = int, default = 10000, help = 'validation number of samples during training')
