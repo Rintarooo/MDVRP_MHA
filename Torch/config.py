@@ -10,7 +10,7 @@ def arg_parser():
 	parser.add_argument('-n', '--n_customer', metavar = 'N', type = int, default = 20, help = 'number of customer nodes, time sequence')
 	parser.add_argument('-c', '--n_car_each_depot', metavar = 'C', type = int, default = 3, help = 'number of available vehicles per depot')
 	parser.add_argument('-D', '--capa', metavar = 'CA', type = float, default = 1., help = 'initial capacity of vehicles')
-	parser.add_argument('-d', '--n_depot', metavar = 'D', type = int, default = 2, help = 'number of depot nodes')
+	parser.add_argument('-d', '--n_depot', metavar = 'D', type = int, default = 3, help = 'number of depot nodes')
 
 	# batch config
 	parser.add_argument('-b', '--batch', metavar = 'B', type = int, default = 512, help = 'batch size')
