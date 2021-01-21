@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "running $0 ..."
-n_depot=3
-n_car_each_depot=2
+n_depot=1
+n_car_each_depot=6
 n_customer=100
 #seed=0
 #capa is float value
