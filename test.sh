@@ -2,11 +2,11 @@
 
 echo "running $0 ..."
 n_depot=3
-n_car_each_depot=4
+n_car_each_depot=2
 n_customer=100
 #seed=0
 #capa is float value
-capa=2
+capa=3
 
 if [ "$1" = "g" ]; then
 	for seed in $(seq 1 10)
@@ -74,7 +74,7 @@ elif [ "$1" = "to" ]; then
 				# python Torch/plot.py -p Torch/Weights/VRP50_train_epoch66.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt} -b 512
 				python Torch/plot.py -p Torch/Weights/VRP50_epoch18.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt} -b 512
 			elif [ "$n_customer" = "100" ]; then
-				python Torch/plot.py -p Torch/Weights/VRP100_epoch5.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt} -b 512
+				python Torch/plot.py -p Torch/Weights/VRP100_epoch15.pt -t Torch/data/${filename}.json -wc ${write_csv} -wc2 ${write_csv_2opt} -b 512
 			fi
 		fi
 	done
