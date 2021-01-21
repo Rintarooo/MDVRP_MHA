@@ -58,7 +58,7 @@ class RolloutBaseline:
 		self.n_car_each_depot = n_car_each_depot
 		self.n_depot = n_depot
 		self.n_customer = n_customer
-		assert capa in [1., 2.], 'capa should be 1. or 2.'
+		assert capa in [1., 2., 3.], 'capa should be 1. or 2. or 3.'
 		self.capa = capa
 		self.weight_dir = weight_dir
 
