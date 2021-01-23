@@ -7,7 +7,8 @@ from torch.utils.data import DataLoader
 import json
 
 # CAPACITIES = {10: 20., 20: 30., 50: 40., 100: 50.}
-CAPACITIES = {5: 10., 10: 20., 20: 30., 50: 40., 100: 50.}
+# CAPACITIES = {5: 10., 10: 20., 20: 30., 50: 40., 100: 50.}
+CAPACITIES = {5: 10., 10: 20., 20: 30., 50: 40., 100: 50., 120: 50.}
 max_demand = 9
 
 def generate_data(device, batch = 10, n_car_each_depot = 15, n_depot = 1, n_customer = 20, capa = 1., seed = None):
