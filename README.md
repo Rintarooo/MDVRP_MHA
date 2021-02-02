@@ -10,7 +10,7 @@
 * scipy
 * numpy
 * plotly (only for plotting)
-* matplotlib (only for plotting)
+* matplotlib (only for plotting in GA)
 * pandas (only for mean of test score)
 
 ## Usage
@@ -35,7 +35,25 @@ you would see the pickle file in `Pkl` dir. now you can start training the model
 python train.py -p Pkl/***.pkl
 ```
 
-### inference phase
+### inference phase(with 10 test data)
+
+run `test.sh`.
+
+`g` option generates 10 test data.
+```
+./test.sh g
+```
+If you wanna remove wrong data, run with `rm` option
+```
+./test.sh rm
+```
+
+
+Now you can test with `or`, `to` and `ga` option.
+
+
+
+### inference phase(with 1 test data)
 Generate test data
   
 (GA -> txt file, Torch and Ortools -> json file).
