@@ -48,13 +48,14 @@ run `test.sh`.
 ```
 ./test.sh g
 ```
-If you wanna remove wrong data, run with `rm` option
+If you create data by mistake, you can remove with `rm` option
 ```
 ./test.sh rm
 ```
 
 
-Now you can test with `or`, `to` and `ga` option.
+Now you can test with `or`, `to` and `ga` option.  
+You can see the result score in `Csv`
   
   
 
