@@ -14,6 +14,9 @@
 * pandas (only for mean of test score)
 
 ## Usage
+* train
+* inference(with 10 data)
+* inference(with 1 data)
 
 ### train phase
 
@@ -36,7 +39,7 @@ python train.py -p Pkl/***.pkl
 ```
   
 
-  
+
 ### inference phase(with 10 test data using shell script)
 
 run `test.sh`.
