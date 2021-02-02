@@ -34,8 +34,10 @@ you would see the pickle file in `Pkl` dir. now you can start training the model
 ```
 python train.py -p Pkl/***.pkl
 ```
+  
 
-### inference phase(with 10 test data)
+  
+### inference phase(with 10 test data using shell script)
 
 run `test.sh`.
 
@@ -50,10 +52,10 @@ If you wanna remove wrong data, run with `rm` option
 
 
 Now you can test with `or`, `to` and `ga` option.
+  
+  
 
-
-
-### inference phase(with 1 test data)
+### inference phase(with 1 test data manually)
 Generate test data
   
 (GA -> txt file, Torch and Ortools -> json file).
