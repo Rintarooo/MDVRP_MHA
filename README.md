@@ -36,10 +36,8 @@ you would see the pickle file in `Pkl` dir. now you can start training the model
 
 ```
 python train.py -p Pkl/***.pkl
-```
-  
-
-
+```  
+ 
 ### inference phase(with 10 test data using shell script)
 
 run `test.sh`.
@@ -48,16 +46,15 @@ run `test.sh`.
 ```
 ./test.sh g
 ```
-If you create data by mistake, you can remove with `rm` option
+If you create data by mistake, you can remove them with `rm` option
 ```
 ./test.sh rm
 ```
 
 
 Now you can test with `or`, `to` and `ga` option.  
-You can see the result score in `Csv`
-  
-  
+You can see the result score in `Csv` dir.  
+
 
 ### inference phase(with 1 test data manually)
 Generate test data
