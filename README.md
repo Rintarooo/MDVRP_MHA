@@ -22,22 +22,19 @@ I leave my own environment below. I tested it out on a single GPU.
 * pandas (only for mean of test score)
 
 ### Docker(option)
-1. build
-2. pull
-docker image
+build or pull docker image
 <br>
-  
-	3. build image
+build image
 ```
 ./docker.sh build
 ```
 <br>  
-	4. pull image
+pull image
 ```
 docker pull docker4rintarooo/mdvrp:latest
 ```
 
-run container
+run container(-v option is mount directory)
 ```
 ./docker.sh run
 ```
