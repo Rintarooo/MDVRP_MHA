@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # default:test:env
-IMAGE_NAME=${2:-test:env}
+IMAGE_NAME=${2:-docker4rintarooo/mdvrp:latest}
 
 if [ "$1" = "build" ]; then
 	docker build -t $IMAGE_NAME .

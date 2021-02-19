@@ -2,8 +2,16 @@
 
 ![newplot](https://user-images.githubusercontent.com/51239551/104798863-88ed3c00-580d-11eb-852c-09c88f2f9afc.png)
 
+## Environment
+I leave my own environment below. I tested it out on a single GPU.
+* OS:
+	* Linux(Ubuntu 18.04.5 LTS) 
+* GPU:
+	* NVIDIA® GeForce® RTX 2080 Ti VENTUS 11GB OC
+* CPU:
+	* Intel® Xeon® CPU E5640 @ 2.67GHz
 
-## Dependencies
+### Dependencies
 
 * Python = 3.6
 * PyTorch = 1.6
@@ -13,8 +21,20 @@
 * matplotlib (only for plotting in GA)
 * pandas (only for mean of test score)
 
+### Docker(option)
+1. build or 2. pull
+docker image
+  
+  
+1. build image and run container
 ```
 ./docker.sh build && ./docker.sh run
+```
+  
+
+2. pull image and run container
+```
+docker pull docker4rintarooo/mdvrp:latest && ./docker.sh run
 ```
 
 ## Usage
