@@ -22,7 +22,7 @@ I leave my own environment below. I tested it out on a single GPU.
 * pandas (only for mean of test score)
 
 ### Docker(option)
-build or pull docker image<br>
+build or pull docker image  
 build image
 ```bash
 ./docker.sh build
