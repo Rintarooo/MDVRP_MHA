@@ -10,7 +10,7 @@ if [ "$1" = "build" ]; then
 elif [ "$1" = "run" ]; then
 	docker run -it --rm  \
 		--gpus=all \
-		-v ${PWD}:/home/user \
+		-v ${PWD}:/app \
 		$IMAGE_NAME
 		#test:env
 else

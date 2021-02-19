@@ -1,4 +1,5 @@
 FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
+# https://github.com/pytorch/pytorch/blob/master/docker/pytorch/Dockerfile
 ARG PYTHON_VERSION=3.6.10
 ARG CUDA_TOOLKIT_VERSION=10.1
 ARG PYTORCH_VERSION=1.6.0
@@ -16,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Create a working directory
 RUN mkdir /app
+WORKDIR /app
 
 # Create a non-root user and switch to it
 RUN adduser --disabled-password --gecos '' --shell /bin/bash user \
@@ -26,7 +28,6 @@ USER user
 # All users can use /home/user as their home directory
 ENV HOME=/home/user
 RUN chmod 777 /home/user
-WORKDIR /home/user
 
 # Install Miniconda and Python 3.x
 ENV CONDA_AUTO_UPDATE_CONDA=false
@@ -40,6 +41,7 @@ RUN curl -sLo ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-late
 
 # Install PyTorch1.x
 # https://pytorch.org/get-started/previous-versions/
+# https://github.com/anibali/docker-pytorch/blob/master/dockerfiles/1.7.0-cuda11.0-ubuntu20.04/Dockerfile
  RUN conda install -y -c pytorch \
     cudatoolkit=$CUDA_TOOLKIT_VERSION \
     "pytorch=1.6.0=py3.6_cuda10.1.243_cudnn7.6.3_0" \
