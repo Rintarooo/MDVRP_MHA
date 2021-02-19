@@ -22,20 +22,18 @@ I leave my own environment below. I tested it out on a single GPU.
 * pandas (only for mean of test score)
 
 ### Docker(option)
-build or pull docker image
-<br>
+build or pull docker image<br>
 build image
-```
+```bash
 ./docker.sh build
 ```
-<br>  
 pull image
-```
+```bash
 docker pull docker4rintarooo/mdvrp:latest
 ```
 
 run container(-v option is mount directory)
-```
+```bash
 ./docker.sh run
 ```
 
@@ -119,5 +117,5 @@ cd Ortools && python main.py -p data/***.json
 ### GA(C++)
 * https://github.com/mathiasaap/Multi-Depot-Routing---Genetic-algorithm
 
-### GA(official)
+### GA(public data)
 * https://neo.lcc.uma.es/vrp/vrp-instances/multiple-depot-vrp-instances/
