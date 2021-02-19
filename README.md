@@ -13,6 +13,10 @@
 * matplotlib (only for plotting in GA)
 * pandas (only for mean of test score)
 
+```
+./docker.sh build && ./docker.sh run
+```
+
 ## Usage
 * train
 * inference(with 10 data)
@@ -92,3 +96,6 @@ cd Ortools && python main.py -p data/***.json
 
 ### GA(C++)
 * https://github.com/mathiasaap/Multi-Depot-Routing---Genetic-algorithm
+
+### GA(official)
+* https://neo.lcc.uma.es/vrp/vrp-instances/multiple-depot-vrp-instances/

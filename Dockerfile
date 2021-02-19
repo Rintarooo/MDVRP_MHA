@@ -36,7 +36,7 @@ RUN curl -sLo ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-late
  && chmod +x ~/miniconda.sh \
  && ~/miniconda.sh -b -p ~/miniconda \
  && rm ~/miniconda.sh \
- && conda install -y python==$PYTHON_VERSION numpy scipy pandas plotly \
+ && conda install -y python==$PYTHON_VERSION numpy scipy pandas plotly matplotlib \
  && conda clean -ya
 
 # Install PyTorch1.x
