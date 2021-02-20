@@ -4,6 +4,9 @@ implementation of MDVRP solver
 * GA(Genetic Algorithm)
 * Google OR-Tools(https://developers.google.com/optimization/routing)
 
+![Screen Shot 2021-02-20 at 4 24 02 PM](https://user-images.githubusercontent.com/51239551/108587625-1b967300-7398-11eb-9c45-a3af10bdb343.png)
+
+
 ![newplot](https://user-images.githubusercontent.com/51239551/104798863-88ed3c00-580d-11eb-852c-09c88f2f9afc.png)
 
 ## Environment
