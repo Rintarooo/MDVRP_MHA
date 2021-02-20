@@ -4,7 +4,7 @@
 
 ## Environment
 I leave my environment below. I tested it out on a single GPU.
-<br><br>
+<br>
 ### OS/GPU/CPU
 * OS:
 	* Linux(Ubuntu 18.04.5 LTS) 
@@ -25,7 +25,8 @@ I leave my environment below. I tested it out on a single GPU.
 
 ### Docker(option)
 1. build or pull docker image
-<br><br>
+<br>
+
 build image
 ```bash
 ./docker.sh build
@@ -35,10 +36,12 @@ pull image
 docker pull docker4rintarooo/mdvrp:latest
 ```
 <br><br>
+
 2. run container using docker image(-v option is mount directory)
 ```bash
 ./docker.sh run
 ```
+<br><br>
 
 ## Usage
 * train
