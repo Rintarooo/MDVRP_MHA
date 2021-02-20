@@ -35,9 +35,8 @@ pull image
 ```bash
 docker pull docker4rintarooo/mdvrp:latest
 ```
-<br><br>
 
-2. run container using docker image(-v option is mount directory)
+2. run container using docker image(-v option is to mount directory)
 ```bash
 ./docker.sh run
 ```
@@ -47,6 +46,7 @@ docker pull docker4rintarooo/mdvrp:latest
 * train
 * inference(with 10 data)
 * inference(with 1 data)
+<br><br>
 
 ### train phase
 
@@ -67,7 +67,8 @@ you would see the pickle file in `Pkl` dir. now you can start training the model
 ```
 python train.py -p Pkl/***.pkl
 ```  
- 
+<br><br>
+
 ### inference phase(with 10 test data using shell script)
 
 run `test.sh`.
@@ -81,10 +82,9 @@ If you create data by mistake, you can remove them with `rm` option
 ./test.sh rm
 ```
 
-
 Now you can test with `or`, `to` and `ga` option.  
-You can see the result score in `Csv` dir.  
-
+You can see the result score in `Csv` dir.
+<br><br>
 
 ### inference phase(with 1 test data manually)
 Generate test data
