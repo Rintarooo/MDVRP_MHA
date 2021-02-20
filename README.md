@@ -3,7 +3,9 @@
 ![newplot](https://user-images.githubusercontent.com/51239551/104798863-88ed3c00-580d-11eb-852c-09c88f2f9afc.png)
 
 ## Environment
-I leave my own environment below. I tested it out on a single GPU.
+I leave my environment below. I tested it out on a single GPU.
+<br><br>
+### OS/GPU/CPU
 * OS:
 	* Linux(Ubuntu 18.04.5 LTS) 
 * GPU:
@@ -22,7 +24,8 @@ I leave my own environment below. I tested it out on a single GPU.
 * pandas (only for mean of test score)
 
 ### Docker(option)
-build or pull docker image  
+1. build or pull docker image
+<br><br>
 build image
 ```bash
 ./docker.sh build
@@ -31,8 +34,8 @@ pull image
 ```bash
 docker pull docker4rintarooo/mdvrp:latest
 ```
-
-run container(-v option is mount directory)
+<br><br>
+2. run container using docker image(-v option is mount directory)
 ```bash
 ./docker.sh run
 ```
