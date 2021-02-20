@@ -1,4 +1,8 @@
-# MDVRP solver with Multi-Head Attention, GA, OR-Tools
+# MDVRP solver
+implementation of MDVRP solver
+* Deep Reinforcement Learning(Policy Gradient, model architecture has Multi-Head Attention layer)
+* GA(Genetic Algorithm)
+* Google OR-Tools(https://developers.google.com/optimization/routing)
 
 ![newplot](https://user-images.githubusercontent.com/51239551/104798863-88ed3c00-580d-11eb-852c-09c88f2f9afc.png)
 
@@ -26,7 +30,6 @@ I leave my environment below. I tested it out on a single GPU.
 ### Docker(option)
 1. build or pull docker image
 <br>
-
 build image
 ```bash
 ./docker.sh build
