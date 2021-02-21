@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# default:test:env
+# if $2 is None
+# image:tag is docker4rintarooo/mdvrp:latest
 IMAGE_NAME=${2:-docker4rintarooo/mdvrp:latest}
 
 if [ "$1" = "build" ]; then
@@ -12,9 +13,9 @@ elif [ "$1" = "run" ]; then
 		--gpus=all \
 		-v ${PWD}:/app \
 		$IMAGE_NAME
-		#test:env
 else
-	echo "command should be:
+	echo "command should be either one:
 	 ${0} build
+	 or
 	 ${0} run"
 fi
