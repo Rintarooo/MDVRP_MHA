@@ -32,7 +32,6 @@ I leave my environment below. I tested it out on a single GPU.
 
 ### Docker(option)
 1. build or pull docker image
-<br>
 
 build image
 ```bash
