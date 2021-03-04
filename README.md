@@ -11,8 +11,8 @@ implementation of MDVRP solver
 
 ```bash
 
-├── Csv
-├── Png
+├── Csv -> mean of cost and time during test 
+├── Png -> plot images during test
 │
 ├── GA
 │   └── data
@@ -22,7 +22,7 @@ implementation of MDVRP solver
 │
 └── Torch
     ├── data
-    ├── Nets -> python codes
+    ├── Nets -> python codes for neural network
     ├── Pkl -> pickle files contaning hyperparameter
     ├── Weights -> pt files of pre-trained weights 
     └── Csv -> csv files of train log
