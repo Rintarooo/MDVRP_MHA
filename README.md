@@ -9,6 +9,25 @@ implementation of MDVRP solver
 
 ![newplot](https://user-images.githubusercontent.com/51239551/104798863-88ed3c00-580d-11eb-852c-09c88f2f9afc.png)
 
+```bash
+$ tree -d -L 2 
+
+├── Csv
+├── GA
+│   ├── Cpp
+│   ├── data
+│   └── data_official
+├── Ortools
+│   └── data
+├── Png
+└── Torch
+    ├── Csv
+    ├── Nets
+    ├── Pkl
+    ├── Weights
+    └── data
+```
+
 ## Environment
 I leave my environment below. I tested it out on a single GPU.
 <br>
