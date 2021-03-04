@@ -10,22 +10,22 @@ implementation of MDVRP solver
 ![newplot](https://user-images.githubusercontent.com/51239551/104798863-88ed3c00-580d-11eb-852c-09c88f2f9afc.png)
 
 ```bash
-$ tree -d -L 2 
 
 ├── Csv
+├── Png
+│
 ├── GA
-│   ├── Cpp
-│   ├── data
-│   └── data_official
+│   └── data
+│
 ├── Ortools
 │   └── data
-├── Png
+│
 └── Torch
-    ├── Csv
-    ├── Nets
-    ├── Pkl
-    ├── Weights
-    └── data
+    ├── data
+    ├── Nets -> python codes
+    ├── Pkl -> pickle files contaning hyperparameter
+    ├── Weights -> pt files of pre-trained weights 
+    └── Csv -> csv files of train log
 ```
 
 ## Environment
