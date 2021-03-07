@@ -126,7 +126,7 @@ If you create data by mistake, you can remove them with `rm` option
 ```
 
 Now you can test with `or`, `to` and `ga` option.  
-You can see the result score in `Csv` dir.
+You can see the result score by running `cd Csv/ && ./run.sh` dir.
 <br><br>
 
 ### inference phase(with 1 test data manually)
