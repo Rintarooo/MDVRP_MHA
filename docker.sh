@@ -13,9 +13,15 @@ elif [ "$1" = "run" ]; then
 		--gpus=all \
 		-v ${PWD}:/app \
 		$IMAGE_NAME
+elif [ "$1" = "run_cpu" ]; then
+	docker run -it --rm  \
+		-v ${PWD}:/app \
+		$IMAGE_NAME
 else
 	echo "command should be either one:
 	 ${0} build
 	 or
-	 ${0} run"
+	 ${0} run
+	 or
+	 ${0} run_cpu"
 fi

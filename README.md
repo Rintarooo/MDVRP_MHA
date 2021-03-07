@@ -29,34 +29,47 @@ implementation of MDVRP solver
 ```
 
 ## Environment
-I leave my environment below. I tested it out on a single GPU.
-<br>
-### OS/GPU/CPU
+I leave my own environment below. I tested it out on a single GPU.
 * OS:
 	* Linux(Ubuntu 18.04.5 LTS) 
 * GPU:
 	* NVIDIA® GeForce® RTX 2080 Ti VENTUS 11GB OC
 * CPU:
 	* Intel® Xeon® CPU E5640 @ 2.67GHz
+* NVIDIA® Driver = 455.45.01
+* Docker = 20.10.3
+* [nvidia-docker2](https://github.com/NVIDIA/nvidia-docker)(for GPU)
 
 ### Dependencies
 
-* Python = 3.6
-* PyTorch = 1.6
+* Python = 3.6.10
+* PyTorch = 1.6.0
 * scipy
 * numpy
-* plotly (only for plotting)
-* matplotlib (only for plotting in GA)
-* pandas (only for mean of test score)
+* plotly(only for plotting)
+* matplotlib(only for plotting in GA code)
+* pandas(only for mean of test score)
 
 ### Docker(option)
+Make sure you've already installed `Docker`
+```bash
+docker version
+```
+latest `NVIDIA® Driver`
+```bash
+nvidia-smi
+```
+and `nvidia-docker2`(for GPU)
+<br>
+#### Usage
+
 1. build or pull docker image
 
 build image
 ```bash
 ./docker.sh build
 ```
-pull image
+pull image [dockerhub](https://hub.docker.com/repository/docker/docker4rintarooo/mdvrp/tags?page=1&ordering=last_updated)
 ```bash
 docker pull docker4rintarooo/mdvrp:latest
 ```
@@ -65,7 +78,12 @@ docker pull docker4rintarooo/mdvrp:latest
 ```bash
 ./docker.sh run
 ```
+If you don't have a GPU, you can run
+```bash
+./docker.sh run_cpu
+```
 <br><br>
+
 
 ## Usage
 * train
