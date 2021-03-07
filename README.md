@@ -114,8 +114,8 @@ python train.py -p Pkl/***.pkl
 
 ### inference phase(with 10 test data using shell script)
 
-run `test.sh`.
-
+set parameter by editing `test.sh` and run it.
+<br>
 `g` option generates 10 test data in `Torch/data`, `Ortools/data` and `GA/data` dir.
 ```
 ./test.sh g
