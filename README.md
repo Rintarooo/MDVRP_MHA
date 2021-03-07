@@ -69,7 +69,7 @@ build image
 ```bash
 ./docker.sh build
 ```
-pull image [dockerhub](https://hub.docker.com/repository/docker/docker4rintarooo/mdvrp/tags?page=1&ordering=last_updated)
+pull image from [dockerhub](https://hub.docker.com/repository/docker/docker4rintarooo/mdvrp/tags?page=1&ordering=last_updated)
 ```bash
 docker pull docker4rintarooo/mdvrp:latest
 ```
