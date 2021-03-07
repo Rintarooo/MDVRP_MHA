@@ -116,7 +116,7 @@ python train.py -p Pkl/***.pkl
 
 run `test.sh`.
 
-`g` option generates 10 test data.
+`g` option generates 10 test data in `Torch/data`, `Ortools/data` and `GA/data` dir.
 ```
 ./test.sh g
 ```
