@@ -114,7 +114,7 @@ python train.py -p Pkl/***.pkl
 
 ### inference phase(with 10 test data using shell script)
 
-set parameter by editing `test.sh` and run it.
+set parameter(n_depot, n_car_each_depot, n_customer, capa) by editing `test.sh` and run it.
 <br>
 `g` option generates 10 test data in `Torch/data`, `Ortools/data` and `GA/data` dir.
 ```
